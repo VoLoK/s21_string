@@ -22,7 +22,7 @@ jobs:
       with:
         clang-format-version: '16'
         check-path: 'src'
-        fallback-style: '-style=file -assume-filename=materials/linters/.clang-format'
+        fallback-style: 'Google'
 
     - name: Build project
       run: |
