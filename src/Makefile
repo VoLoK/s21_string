@@ -31,6 +31,9 @@ $(OBJS): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
 clean:
 	$(RM) $(OBJS)
 
+check:
+	clang-format -n $(SRC) $(INC)
+
 fclean: clean
 	$(RM) $(TARGET)
 

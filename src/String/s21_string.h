@@ -3,11 +3,13 @@
 
 // For printf
 #include <stdio.h>
+#include <string.h>
 
-#  define s21_NULL ((void*)0)
+#define s21_NULL ((void *)0)
 
-typedef unsigned long s21_size_t;
+typedef long unsigned s21_size_t;
 
 void *s21_memchr(const void *str, int c, s21_size_t n);
+void *s21_memset(void *str, int c, s21_size_t n);
 
 #endif
