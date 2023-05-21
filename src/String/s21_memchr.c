@@ -5,8 +5,8 @@ void *memchr(const void *str, int c, size_t n) {
     size_t i;
     
     for (i = 0; i < n; i++)
-        if (prt[i] == c)
-            return (void *)&prt[i];
+        if (ptr[i] == c)
+            return (void *)&ptr[i];
     
     return NULL;
 }
