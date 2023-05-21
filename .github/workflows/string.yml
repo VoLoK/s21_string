@@ -20,6 +20,7 @@ jobs:
     - name: Check style
       run: |
         brew install clang-format
+        set -e
         cd src
         make lint-check
 
