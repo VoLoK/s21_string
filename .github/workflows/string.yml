@@ -26,6 +26,8 @@ jobs:
           echo "$OUTPUT"
           echo "::error::clang-format found style issues"
           exit 1
+        else
+          echo "clang-format check passed: no style issues found"
         fi
 
     - name: Build project
