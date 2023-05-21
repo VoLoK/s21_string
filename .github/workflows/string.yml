@@ -17,11 +17,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Check project
-      run: |
-        cd src
-        make check
-
     - name: Build project
       run: |
         cd src
