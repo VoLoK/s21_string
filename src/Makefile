@@ -32,10 +32,10 @@ clean:
 	$(RM) $(OBJS)
 
 lint-check:
-	clang-format -n -style=file -assume-filename=materials/lint/.clang-format $(SRC) $(INC)
+	clang-format -n -style=file -assume-filename=materials/linters/.clang-format $(SRC) $(INC)
 	
 lint-fix:
-	clang-format -i -style=file -assume-filename=materials/lint/.clang-format $(SRC) $(INC)
+	clang-format -i -style=file -assume-filename=materials/linters/.clang-format $(SRC) $(INC)
 
 fclean: clean
 	$(RM) $(TARGET)
