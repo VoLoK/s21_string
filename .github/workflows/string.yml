@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      
+    - name: Check style
+      run: |
+        cd src
+        make lint-check
 
     - name: Build project
       run: |

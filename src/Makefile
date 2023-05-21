@@ -31,8 +31,11 @@ $(OBJS): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
 clean:
 	$(RM) $(OBJS)
 
-check:
-	clang-format -n $(SRC) $(INC)
+lint-check:
+	clang-format -n -style=file -assume-filename=materials/lint/.clang-format $(SRC) $(INC)
+	
+lint-fix:
+	clang-format -i -style=file -assume-filename=materials/lint/.clang-format $(SRC) $(INC)
 
 fclean: clean
 	$(RM) $(TARGET)
