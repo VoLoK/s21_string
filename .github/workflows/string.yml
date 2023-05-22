@@ -23,7 +23,8 @@ jobs:
         cd src
         OUTPUT=$(make clang)
         ERROR_COUNT=$(echo "$OUTPUT" | grep -c '<replacement')
-        if [[ $ERROR_COUNT -gt 0 ]]; then
+        echo "$ERROR_COUNT"
+        if [[ $OUTPUT -ne 0 ]]; then
           echo "$OUTPUT"
           echo "::error::clang-format found $ERROR_COUNT style $(if [[ $ERROR_COUNT -eq 1 ]]; then echo issue; else echo issues; fi)"
           exit 1
