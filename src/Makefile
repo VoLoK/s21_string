@@ -32,10 +32,10 @@ clean:
 	$(RM) $(OBJS)
 
 clang:
-	clang-format -n --style=file -output-replacements-xml $(SRC) $(INC)
+	@clang-format -n --style=file -output-replacements-xml $(SRC) $(INC)
 	
 clang-fix:
-	clang-format -i --style=file -output-replacements-xml $(SRC) $(INC)
+	@clang-format -i --style=file -output-replacements-xml $(SRC) $(INC)
 
 fclean: clean
 	$(RM) $(TARGET)
