@@ -22,7 +22,8 @@ jobs:
         brew install clang-format
         cd src
         OUTPUT=$(make clang)
-        if [[ $OUTPUT =~ '<replacement' ]]; then
+        ERROR_COUNT=$(echo "$OUTPUT" | grep -c '<replacement')
+        if [[ $ERROR_COUNT -gt 0 ]]; then
           echo "$OUTPUT"
           echo "::error::clang-format found style issues"
           exit 1
