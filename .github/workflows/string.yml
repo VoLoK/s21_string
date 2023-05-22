@@ -16,6 +16,19 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      
+    - name: Check style
+      run: |
+        brew install clang-format
+        cd src
+        OUTPUT=$(clang-format -output-replacements-xml -style=file -assume-filename=materials/linters/.clang-format ./String/s21_memset.c ./String/s21_memchr.c ./String/s21_string.h)
+        if echo "$OUTPUT" | grep -q '<replacement>'; then
+          echo "$OUTPUT"
+          echo "::error::clang-format found style issues"
+          exit 1
+        else
+          echo "clang-format check passed: no style issues found"
+        fi
 
     - name: Build project
       run: |
