@@ -23,7 +23,6 @@ jobs:
         cd src
         make clang | grep "<replacement "
         if [ $? -ne 1 ]; then
-          echo "Commit did not match clang-format"
           exit 1
         fi
 
