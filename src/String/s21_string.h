@@ -1,7 +1,7 @@
 #ifndef SRC_S21_STRING_H_
 #define SRC_S21_STRING_H_
 
-#include <stdio.h>  // for
+#include <stdio.h>
 
 #define s21_NULL ((void *)0)
 
