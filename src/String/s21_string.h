@@ -8,6 +8,6 @@
 typedef long unsigned s21_size_t;
 
 void *s21_memchr(const void *str, int c, s21_size_t n);
-void *s21_memset(void *str, int c, s21_size_t n); /// new
+void *s21_memset(void *str, int c, s21_size_t n);
 
 #endif
