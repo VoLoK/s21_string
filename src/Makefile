@@ -31,11 +31,11 @@ $(OBJS): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
 clean:
 	$(RM) $(OBJS)
 
-lint-check:
-	clang-format -n -style=file -assume-filename=materials/linters/.clang-format $(SRC) $(INC)
+clang:
+	clang-format -n --style=file -output-replacements-xml $(SRC) $(INC)
 	
-lint-fix:
-	clang-format -i -style=file -assume-filename=materials/linters/.clang-format $(SRC) $(INC)
+clang-fix:
+	clang-format -i --style=file -output-replacements-xml $(SRC) $(INC)
 
 fclean: clean
 	$(RM) $(TARGET)
