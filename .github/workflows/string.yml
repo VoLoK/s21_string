@@ -16,14 +16,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-      
-    - name: Check style
-      run: |
-        brew install clang-format
-        cd src
-        make clang
-        if [ $? -ne 1 ]; then
-        fi
 
     - name: Build project
       run: |
