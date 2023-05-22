@@ -21,8 +21,8 @@ jobs:
       run: |
         brew install clang-format
         cd src
-        OUTPUT=$(clang-format -style=file -assume-filename=./materials/linters/.clang-format -output-replacements-xml ./String/s21_memset.c ./String/s21_memchr.c ./String/s21_string.h)
-        if [[ -n "$OUTPUT" ]]; then
+        OUTPUT=$(clang-format -style=file -assume-filename=materials/linters/.clang-format -output-replacements-xml ./String/s21_memset.c ./String/s21_memchr.c ./String/s21_string.h)
+        if [[ $OUTPUT =~ '<replacement' ]]; then
           echo "$OUTPUT"
           echo "::error::clang-format found style issues"
           exit 1
