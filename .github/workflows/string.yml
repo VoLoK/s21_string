@@ -22,12 +22,13 @@ jobs:
         brew install clang-format
         cd src
         OUTPUT=$(make lint-check)
-        if [[ -n "$OUTPUT" ]]; then
+        EXIT_CODE=$?
+        if [[ $EXIT_CODE -eq 0 ]]; then
+          echo "clang-format check passed: no style issues found"
+        else
           echo "$OUTPUT"
           echo "::error::clang-format found style issues"
           exit 1
-        else
-          echo "clang-format check passed: no style issues found"
         fi
 
     - name: Build project
