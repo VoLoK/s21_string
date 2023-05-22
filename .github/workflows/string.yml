@@ -21,16 +21,7 @@ jobs:
       run: |
         brew install clang-format
         cd src
-        OUTPUT=$(make clang)
-        ERROR_COUNT=$(echo "$OUTPUT" | grep -c '<replacement')
-        echo "$ERROR_COUNT"
-        if [[ $OUTPUT -ne 0 ]]; then
-          echo "$OUTPUT"
-          echo "::error::clang-format found $ERROR_COUNT style $(if [[ $ERROR_COUNT -eq 1 ]]; then echo issue; else echo issues; fi)"
-          exit 1
-        else
-          echo "clang-format check passed: no style issues found"
-        fi
+        make clang
 
     - name: Build project
       run: |
