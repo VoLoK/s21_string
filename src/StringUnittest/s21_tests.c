@@ -7,7 +7,6 @@ int main(void) {
 }
 
 void run_testcase(Suite *testcase) {
-  //	setlocale(LC_ALL, "");
   static int counter_testcase = 1;
 
   if (counter_testcase > 1) putchar('\n');
@@ -23,7 +22,7 @@ void run_testcase(Suite *testcase) {
 }
 
 void run_tests(void) {
-  Suite *list_cases[] = {suite_strstr(), NULL};
+  Suite *list_cases[] = {suite_strstr(), suite_strncpy(), suite_memset(), NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
        current_testcase++) {

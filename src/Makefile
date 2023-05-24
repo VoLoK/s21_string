@@ -37,8 +37,8 @@ $(TARGET): $(OBJ)
 	@echo "\033[22;90m$(TARGET) has been changed and recompiled.\033[0m"
 
 $(TEST_TARGET): $(TEST_OBJ)
-	$(AR) $(TEST_TARGET) $(TEST_OBJ)
-	$(RAN) $(TEST_TARGET)
+	@$(AR) $(TEST_TARGET) $(TEST_OBJ)
+	@$(RAN) $(TEST_TARGET)
 	@echo "\033[22;90m$(TEST_TARGET) has been changed and recompiled.\033[0m"
 
 $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)

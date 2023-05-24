@@ -8,6 +8,8 @@
 #include "s21_string.h"
 
 Suite *suite_strstr(void);
+Suite *suite_strncpy(void);
+Suite *suite_memset(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);
