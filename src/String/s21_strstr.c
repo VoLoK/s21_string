@@ -10,7 +10,7 @@ char *s21_strstr(const char *haystack, const char *needle) {
     if (*haystack == *needle) {
       char *hay = (char *)haystack;
       char *need = (char *)needle;
-      while (*hay == *need) {
+      while (*hay == *need && *need != '\0') {
         hay++;
         need++;
       }
