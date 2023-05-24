@@ -11,5 +11,9 @@ void *s21_memchr(const void *str, int c, s21_size_t n);
 void *s21_memset(void *str, int c, s21_size_t n);
 char *s21_strncpy(char *dest, const char *src, s21_size_t n);
 char *s21_strstr(const char *haystack, const char *needle);
+char *s21_strchr(const char *str, int c);
+s21_size_t s21_strlen(const char *str);
+char *s21_strpbrk(const char *s1, const char *s2);
+
 
 #endif
