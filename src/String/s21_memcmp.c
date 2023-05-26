@@ -1,6 +1,6 @@
 #include "s21_string.h"
 
-int memcmp(const void *str1, const void *str2, size_t n) {
+int memcmp(const void *str1, const void *str2, s21_size_t n) {
   char *str_1 = (char *)str1;
   char *str_2 = (char *)str2;
   int result = 0;
