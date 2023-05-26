@@ -1,6 +1,6 @@
 #include "s21_string.h"
 
-void *memcpy(void *dest, const void *src, s21_size_t n) {
+void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
   char *source = (char *)src;
   char *destination = (char *)dest;
   int i = 0;
