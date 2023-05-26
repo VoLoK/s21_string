@@ -1,9 +1,9 @@
-#include "s21_string.h"
+#include "includes/s21_string.h"
 
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
   int result = 0;
   int temp = 0;
-  for (int i = 0; i < n && !result && !temp; i++) {
+  for (s21_size_t i = 0; i < n && !result && !temp; i++) {
     if (str1[i] == '\0' && str2[i] == '\0') {
       temp = 1;
     } else if (str1[i] == '\0') {
