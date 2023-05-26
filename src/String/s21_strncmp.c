@@ -1,4 +1,4 @@
-#include "includes/s21_string.h"
+#include "s21_string.h"
 
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
   int result = 0;
@@ -7,13 +7,13 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     if (str1[i] == '\0' && str2[i] == '\0') {
       temp = 1;
     } else if (str1[i] == '\0') {
-      result = -1;
+      result = str1[i] - str2[i];
     } else if (str2[i] == '\0') {
-      result = 1;
+      result = str2[i] - str1[i];
     } else if (str1[i] > str2[i]) {
-      result = 1;
+      result = str1[i] - str2[i];
     } else if (str1[i] < str2[i]) {
-      result = -1;
+      result = str1[i] - str2[i];
     }
   }
   return result;
