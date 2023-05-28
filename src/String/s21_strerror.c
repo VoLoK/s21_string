@@ -119,7 +119,9 @@ static const char *const s21_sys_errlist[S21_NERR] = {
     [105] = "Previous owner died",
     [106] = "Interface output queue is full",
 };
+
 #else
+
 static const char *const s21_sys_errlist[S21_NERR] = {
     [0] = "Success",
     [1] = "Operation not permitted",
