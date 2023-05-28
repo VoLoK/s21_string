@@ -286,7 +286,7 @@ char *s21_strerror(int errnum) {
     if (errnum < 0 || errnum >= S21_NERR) {
         s21_errstr(errnum, buf);
     } else {
-        strcpy(buf, s21_sys_errlist[errnum]);
+        s21_strncpy(buf, s21_sys_errlist[errnum], s21_strlen(s21_sys_errlist[errnum]));
     }
     
     return buf;
