@@ -10,6 +10,8 @@
 Suite *suite_strstr(void);
 Suite *suite_strncpy(void);
 Suite *suite_memset(void);
+Suite *suite_strchr(void);
+Suite *suite_strpbrk(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);

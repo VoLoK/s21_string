@@ -26,7 +26,7 @@ MK:= mkdir -p
 RM:= rm -f
 
 CFLAGS= -Wall -Wextra -Werror -std=c11
-TEST_CFLAGS= -g $(CFLAGS) $(shell pkg-config --cflags --libs check) -lm
+TEST_CFLAGS= -g $(CFLAGS) $(shell pkg-config --cflags --libs check) -lm -fsanitize=address
 GCOV_FLAGS?= -fprofile-arcs -ftest-coverage
 
 all: s21_string.a

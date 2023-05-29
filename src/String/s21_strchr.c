@@ -1,12 +1,13 @@
 #include "s21_string.h"
-char *s21_strchr(const char* str, int c){
-    char *zavupa[4096];
-    int flag=0;
-    while (*str !='\0')
-    {
-        if (*str == c) *zavupa= (char *) str;
-        str++;
-        flag=1;
+char* s21_strchr(const char* str, int c)     {
+    const char* position = s21_NULL;
+    s21_size_t i = 0;
+    for(i = 0; ;i++) {
+        if((unsigned char) str[i] == c) {
+            position = &str[i];
+            break;
+        }
+        if (str[i]=='\0') break;
     }
-    return (flag!=0) ? *zavupa :NULL;
-}   
+    return (char *) position;
+}

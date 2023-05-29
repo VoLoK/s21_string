@@ -2,9 +2,9 @@
 
 char *s21_strpbrk(const char *s1, const char *s2)
 {
-    char *fp[4096];
+    char *fp[2048];
  int flag=0;
-    if((s1 == NULL) || (s2 == NULL))
+    if((s1 == s21_NULL) || (s2 == s21_NULL))
         flag=1;
     while(*s1 && flag!=1)
     {
@@ -17,5 +17,5 @@ char *s21_strpbrk(const char *s1, const char *s2)
             flag=1; *fp=(char *)s1;
         }
     }
-    return (flag!=0) ? *fp: NULL;
+    return (flag!=0) ? *fp: s21_NULL;
 }
