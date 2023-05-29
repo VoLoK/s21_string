@@ -24,7 +24,7 @@ START_TEST(empty_s1s2) {
 }
 END_TEST
 
-START_TEST(empty_needle) {
+START_TEST(empty_s2) {
   char s1[] = "Some meaningless text";
   char s2[] = "";
 
@@ -71,7 +71,7 @@ Suite* suite_strpbrk() {
   tcase_add_test(tcase_core, empty_s1);
   tcase_add_test(tcase_core, some_s1_in_s2);
   tcase_add_test(tcase_core, empty_s1s2);
-  tcase_add_test(tcase_core, empty_needle);
+  tcase_add_test(tcase_core, empty_s2);
   tcase_add_test(tcase_core, regular_test);
   tcase_add_test(tcase_core, no_match_test);
   tcase_add_test(tcase_core, register_test);
