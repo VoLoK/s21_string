@@ -1,5 +1,4 @@
 #include "s21_string.h"
-#include <string.h>
 char *s21_strchr(const char* str, int c){
     char *zavupa[4096];
     int flag=0;
