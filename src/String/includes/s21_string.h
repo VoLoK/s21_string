@@ -18,5 +18,7 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n);
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n);
 int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
 s21_size_t s21_strlen(const char *str);
+char *s21_strchr(const char* str, int c);
+char *s21_strpbrk(const char *s1, const char *s2);
 
 #endif
