@@ -39,14 +39,6 @@ int s21_sprintf(char* str, const char* format, ...) {
   return res;
 }
 
-// int main() {
-//	char buff[200];
-//	int test = -3;
-//	s21_sprintf(buff, "Value = %d", test);
-//	puts(buff);
-//	return 0;
-// }
-
 char* s21_itoa(int input, char* buff, int num) {
   int base = 10;
   char* p;
