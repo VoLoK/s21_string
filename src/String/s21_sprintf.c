@@ -5,7 +5,7 @@ int s21_sprintf(char* str, const char* format, ...) {
   int res = 0;
   va_list list;
   va_start(list, format);
-  char temp[3096];
+  char temp[S21_TEXTMAX];
   int size = (int)s21_strlen(format);
   int i = 0;
   unsigned char len = ' ';
