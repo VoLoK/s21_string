@@ -1,5 +1,4 @@
 #include "s21_string.h"
-#include <string.h>
 
 char *s21_strpbrk(const char *s1, const char *s2)
 {
