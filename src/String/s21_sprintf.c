@@ -16,19 +16,19 @@ int s21_sprintf(char* str, const char* format, ...) {
           c_specific();
           break;
         case 'd':
-          d_specific(temp, list, p, len, i, str);
+          d_specific(temp, list, p, len, &i, str);
           break;
         case 'f':
           f_specific();
           break;
         case 's':
-          s_specific();
+          s_specific(list, p, len, &i, str);
           break;
         case 'u':
           u_specific();
           break;
         case '%':
-		  percent_specific();
+          percent_specific();
           break;
       }
     } else {
@@ -76,11 +76,17 @@ void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
   *i += (len);
 }
 
+void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
+  p = va_arg(list, char*);
+  len = (unsigned char)s21_strlen(p);
+  s21_memset(&str[*i], ' ', 0);
+  s21_strncat(&str[*i], p, len);
+  *i += (len);
+}
+
 void c_specific() {}
 
 void f_specific() {}
-
-void s_specific(void) {}
 
 void u_specific(void) {}
 
