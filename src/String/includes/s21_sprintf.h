@@ -6,7 +6,7 @@
 
 char* s21_itoa(int input, char* buff, int num);
 char* s21_convert(char* buff, int size, unsigned int num, int base);
-void d_specific(char*, va_list, char*, unsigned char, int, char*);
+void d_specific(char*, va_list, char*, unsigned char, int*, char*);
 void c_specific(void);
 void f_specific(void);
 void s_specific(void);
