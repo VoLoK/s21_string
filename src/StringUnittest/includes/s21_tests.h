@@ -10,6 +10,9 @@
 Suite *suite_strstr(void);
 Suite *suite_strncpy(void);
 Suite *suite_memset(void);
+Suite *suite_strncmp(void);
+Suite *suite_memcmp(void);
+Suite *suite_memcpy(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);
