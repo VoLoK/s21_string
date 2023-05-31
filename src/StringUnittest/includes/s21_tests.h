@@ -11,6 +11,7 @@ Suite *suite_strstr(void);
 Suite *suite_strncpy(void);
 Suite *suite_memset(void);
 Suite *suite_memchr(void);
+Suite *suite_strerror(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);
