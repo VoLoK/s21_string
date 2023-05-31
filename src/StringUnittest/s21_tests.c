@@ -22,7 +22,8 @@ void run_testcase(Suite *testcase) {
 }
 
 void run_tests(void) {
-  Suite *list_cases[] = {suite_strstr(), suite_strncpy(), suite_memset(), NULL};
+  Suite *list_cases[] = {suite_strstr(), suite_strncpy(), suite_memset(),
+                         suite_memchr(),  NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
        current_testcase++) {
