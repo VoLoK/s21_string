@@ -3,7 +3,7 @@
 START_TEST(some_test) {
   char s21_dest[] = "someIntellectualText_el_ell";
   char s21_src[] = "ell";
-  s21_size_t n = 7;
+  s21_size_t n = 100;
 
   ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
                    strncmp(s21_dest, s21_src, n));
@@ -30,10 +30,20 @@ START_TEST(empty_test) {
 }
 END_TEST
 
+START_TEST(middle_text_test) {
+  char s21_dest[] = "UmbroBigbroKAKUmbroBigbro";
+  char s21_src[] = "KAK";
+  s21_size_t n = 100;
+
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
+}
+END_TEST
+
 START_TEST(replace_register_test) {
   char s21_dest[] = "hello";
   char s21_src[] = "Hello";
-  s21_size_t n = 1;
+  s21_size_t n = 20;
 
   ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
                    strncmp(s21_dest, s21_src, n));
@@ -45,7 +55,7 @@ START_TEST(long_test) {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec "
       "tempus felis. Nullam dapibus nam.";
   char s21_src[] = "***";
-  s21_size_t n = 10;
+  s21_size_t n = 100;
 
   ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
                    strncmp(s21_dest, s21_src, n));
@@ -59,6 +69,7 @@ Suite* suite_strncmp() {
   tcase_add_test(tcase_core, some_test);
   tcase_add_test(tcase_core, zero_n_test);
   tcase_add_test(tcase_core, empty_test);
+  tcase_add_test(tcase_core, middle_text_test);
   tcase_add_test(tcase_core, replace_register_test);
   tcase_add_test(tcase_core, long_test);
 
