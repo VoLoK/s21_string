@@ -12,4 +12,5 @@ char* s21_strchr(const char* str, int c) {
     if (str[i] == '\0') break;
   }
   return (char*)position;
+
 }
