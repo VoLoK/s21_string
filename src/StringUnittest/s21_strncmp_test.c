@@ -5,7 +5,8 @@ START_TEST(some_test) {
   char s21_src[] = "ell";
   s21_size_t n = 7;
 
-  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
 }
 END_TEST
 
@@ -14,7 +15,8 @@ START_TEST(zero_n_test) {
   char s21_src[] = "some";
   s21_size_t n = 0;
 
-  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
 }
 END_TEST
 
@@ -23,27 +25,18 @@ START_TEST(empty_test) {
   char s21_src[] = "\0";
   s21_size_t n = 0;
 
-  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
 }
 END_TEST
-
-// START_TEST(replace_number_test) {
-//   char s21_dest[] = "hello";
-//   char s21_src = "2";
-//   char s21_dest[] = "hello";
-//    = "2";
-//   s21_size_t n = 3;
-
-//   ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
-// }
-// END_TEST
 
 START_TEST(replace_register_test) {
   char s21_dest[] = "hello";
   char s21_src[] = "Hello";
   s21_size_t n = 1;
 
-  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
 }
 END_TEST
 
@@ -54,7 +47,8 @@ START_TEST(long_test) {
   char s21_src[] = "***";
   s21_size_t n = 10;
 
-  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n), strncmp(s21_dest, s21_src, n));
+  ck_assert_int_eq(s21_strncmp(s21_dest, s21_src, n),
+                   strncmp(s21_dest, s21_src, n));
 }
 END_TEST
 
@@ -65,7 +59,6 @@ Suite* suite_strncmp() {
   tcase_add_test(tcase_core, some_test);
   tcase_add_test(tcase_core, zero_n_test);
   tcase_add_test(tcase_core, empty_test);
-  // tcase_add_test(tcase_core, replace_number_test);
   tcase_add_test(tcase_core, replace_register_test);
   tcase_add_test(tcase_core, long_test);
 
