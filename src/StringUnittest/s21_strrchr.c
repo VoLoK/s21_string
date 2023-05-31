@@ -4,15 +4,15 @@ START_TEST(empty_str) {
   char str[] = "";
   int c = '1';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
 START_TEST(some_cin_str) {
-  char str[] = "hellell56o";
+  char str[] = "hellell556o";
   int c = '5';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
@@ -20,7 +20,7 @@ START_TEST(empty_str_and_c) {
   char str[] = "";
   int c = '\0';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
@@ -28,7 +28,7 @@ START_TEST(empty_c) {
   char str[] = "Some meaningless text";
   int c = '\0';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
@@ -36,7 +36,7 @@ START_TEST(regular_test) {
   char str[] = "1Greetings";
   int c = '1';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
@@ -44,7 +44,7 @@ START_TEST(no_match_test) {
   char str[] = "i need this text";
   int c = '5';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
@@ -52,13 +52,13 @@ START_TEST(one_symbol_test) {
   char str[] = "1";
   int c = '1';
 
-  ck_assert_pstr_eq(s21_strchr(str, c), strchr(str, c));
+  ck_assert_pstr_eq(s21_strrchr(str, c), strrchr(str, c));
 }
 END_TEST
 
-Suite* suite_strchr() {
-  Suite* suite = suite_create("strchr_suite");
-  TCase* tcase_core = tcase_create("strchr_tc");
+Suite* suite_strrchr() {
+  Suite* suite = suite_create("strrchr_suite");
+  TCase* tcase_core = tcase_create("strrchr_tc");
   tcase_add_test(tcase_core, empty_str);
   tcase_add_test(tcase_core, some_cin_str);
   tcase_add_test(tcase_core, empty_c);
