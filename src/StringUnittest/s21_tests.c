@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "s21_tests.h"
 
 int main(void) {
@@ -34,6 +36,7 @@ void run_tests(void) {
       suite_strpbrk(),
       suite_strrchr(),
       suite_strstr(),
+	  suite_strtok(),
       NULL
   };
 
