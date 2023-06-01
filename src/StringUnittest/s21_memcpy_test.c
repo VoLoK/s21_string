@@ -2,7 +2,7 @@
 
 START_TEST(simple_copy) {
   const char src[] = "12345";
-  const char dest[] = "";
+  const char dest[5] = "";
   s21_size_t n = 3;
   ck_assert_str_eq(s21_memcpy((void *)dest, src, n), memcpy((void *)dest, src, n));
 }

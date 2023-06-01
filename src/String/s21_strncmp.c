@@ -9,7 +9,7 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     } else if (str1[i] == '\0') {
       result = str1[i] - str2[i];
     } else if (str2[i] == '\0') {
-      result = str2[i] - str1[i];
+      result = str1[i] - str2[i];
     } else if (str1[i] > str2[i]) {
       result = str1[i] - str2[i];
     } else if (str1[i] < str2[i]) {
