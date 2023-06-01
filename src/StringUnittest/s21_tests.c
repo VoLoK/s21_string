@@ -1,5 +1,7 @@
 #include "s21_tests.h"
 
+#include <stdio.h>
+
 int main(void) {
   run_tests();
 
@@ -22,19 +24,19 @@ void run_testcase(Suite *testcase) {
 }
 
 void run_tests(void) {
-  Suite *list_cases[] = {
-      suite_memchr(),
-      suite_memset(),
-      suite_strchr(),
-      suite_strlen(),
-      suite_strncat(),
-      suite_strncmp(),
-      suite_strncpy(),
-      suite_strpbrk(),
-      suite_strrchr(),
-      suite_strstr(),
-      NULL
-  };
+  Suite *list_cases[] = {suite_memchr(),
+                         suite_memset(),
+                         suite_strchr(),
+                         suite_strerror(),
+                         suite_strlen(),
+                         suite_strncat(),
+                         suite_strncmp(),
+                         suite_strncpy(),
+                         suite_strpbrk(),
+                         suite_strrchr(),
+                         suite_strstr(),
+                         suite_strtok(),
+                         NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
        current_testcase++) {

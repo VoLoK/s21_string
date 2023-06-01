@@ -277,7 +277,7 @@ static void s21_errstr(int num, char *buf) {
   *--r = ':';
 #endif
 
-  s21_strncpy(buf, UERR, s21_strlen(UERR));
+  s21_strncpy(buf, UERR, s21_strlen(UERR) + 1);
   s21_strncat(buf, r, s21_strlen(r));
 }
 
@@ -288,7 +288,7 @@ char *s21_strerror(int errnum) {
     s21_errstr(errnum, buf);
   } else {
     s21_strncpy(buf, s21_sys_errlist[errnum],
-                s21_strlen(s21_sys_errlist[errnum]));
+                s21_strlen(s21_sys_errlist[errnum]) + 1);
   }
 
   return buf;
