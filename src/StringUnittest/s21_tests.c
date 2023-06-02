@@ -31,6 +31,8 @@ void run_tests(void) {
                          suite_strlen(),
                          suite_strncat(),
                          suite_strncmp(),
+                         suite_memcmp(),
+                         suite_memcpy(),
                          suite_strncpy(),
                          suite_strpbrk(),
                          suite_strrchr(),

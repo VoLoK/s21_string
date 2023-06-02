@@ -8,6 +8,8 @@
 
 Suite *suite_memchr(void);
 Suite *suite_memset(void);
+Suite *suite_memcmp(void);
+Suite *suite_memcpy(void);
 Suite *suite_strchr(void);
 Suite *suite_strerror(void);
 Suite *suite_strlen(void);
