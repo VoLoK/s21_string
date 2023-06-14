@@ -13,7 +13,7 @@ int s21_sprintf(char* str, const char* format, ...) {
     if (*format++ == '%') {
       switch (*format++) {
         case 'c':
-          c_specific();
+          c_specific(list, str, &i);
           break;
         case 'd':
           d_specific(temp, list, p, len, &i, str);
@@ -22,7 +22,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           f_specific();
           break;
         case 's':
-          s_specific(list, p, len, &i, str);
+          s_specific(list, p, len, &i, str);  
           break;
         case 'u':
           u_specific();
@@ -84,8 +84,12 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
   *i += (len);
 }
 
-void c_specific() {}
-
+void c_specific(va_list list, char *str, int *i) {
+  char c = va_arg(list, int);
+  s21_memset(&str[*i], c, 1);
+  *i += 1;
+}
+  
 void f_specific() {}
 
 void u_specific(void) {}
