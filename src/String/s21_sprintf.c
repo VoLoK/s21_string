@@ -19,7 +19,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str);
           break;
         case 'f':
-          f_specific();
+          f_specific(list, p, temp, len, &i, str);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -36,6 +36,7 @@ int s21_sprintf(char* str, const char* format, ...) {
       str[i] = 0;
     }
   }
+  va_end(list);
   return res;
 }
 
@@ -86,7 +87,55 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
 
 void c_specific() {}
 
-void f_specific() {}
+void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
+                char* str) {
+  float value = (float)va_arg(list, double);
+  p = s21_ftoa(temp, sizeof(temp), value, 0);
+  len = (unsigned char)s21_strlen(p);
+  s21_strncat(&str[*i], p, s21_strlen(p));
+  i += len;
+}
+
+char* f_to_str(char* buff, int size, float value, int digits) {
+  int i = 0;
+  int factor = 10;
+  int num = (int)value;
+  int sub;
+  char* p;
+  p = &buff[size - 1];
+  *p = '\0';
+  if (value < 0) {
+    num *= -1;
+    value *= -1;
+  }
+  if (digits == 0) {
+    digits = 6;
+  }
+  while (i++ < digits) {
+    value = value * factor;
+    num = num * factor;
+    sub = value - num;
+    *(p - digits) = sub + '0';
+    p++;
+    num += sub;
+  }
+
+  return &buff[size - 1] - digits;
+}
+
+char* s21_ftoa(char* buff, int size, float value, int digits) {
+  char* p;
+  char* q;
+  p = f_to_str(buff, size, value, digits);
+  *--p = '.';
+  q = s21_itoa((int)(p - &buff[0]), buff, (int)value);
+  if (value > -1 && value < 0) {
+    *--q = '-';
+  }
+  int p_count = (int)s21_strlen(p);
+  s21_strncat(q, p, p_count);
+  return q;
+}
 
 void u_specific(void) {}
 
