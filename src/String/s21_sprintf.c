@@ -9,7 +9,6 @@ int s21_sprintf(char* str, const char* format, ...) {
   int size = (int)s21_strlen(format);
   int i = 0;
   unsigned char len = ' ';
-  float value = 0.0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
       switch (*format++) {
@@ -20,7 +19,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str);
           break;
         case 'f':
-          f_specific(list, value, p, temp, len, &i, str);
+          f_specific(list, p, temp, len, &i, str);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -88,9 +87,9 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
 
 void c_specific() {}
 
-void f_specific(va_list list, float value, char* p, char* temp,
-                unsigned char len, int* i, char* str) {
-  value = (float)va_arg(list, double);
+void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
+                char* str) {
+  float value = (float)va_arg(list, double);
   p = s21_ftoa(temp, sizeof(temp), value, 0);
   len = (unsigned char)s21_strlen(p);
   s21_strncat(&str[*i], p, s21_strlen(p));
