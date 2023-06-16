@@ -12,11 +12,14 @@ int s21_sprintf(char* str, const char* format, ...) {
   unsigned char len = ' ';
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
-        if (*format++ == '+') {
-            flag_plus(list, str, &i, &num);
-        } else {
-            format--;
-        }
+      if (*format == '+') {
+        flag_plus(list, str, &i, &num);
+          format++;
+      }
+      else if (*format == ' ') {
+        flag_space(list, str, &i, &num);
+          format++;
+      }
       switch (*format++) {
         case 'c':
           c_specific(list, str, &i);
@@ -28,7 +31,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           f_specific();
           break;
         case 's':
-          s_specific(list, p, len, &i, str);  
+          s_specific(list, p, len, &i, str);
           break;
         case 'u':
           u_specific();
@@ -75,11 +78,11 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
 
 void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
                 char* str, int num) {
-    if (num != 0) {
-        p = s21_itoa(sizeof(temp), temp, num);
-    } else {
-        p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
-    }
+  if (num != 0) {
+    p = s21_itoa(sizeof(temp), temp, num);
+  } else {
+    p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
+  }
   len = (unsigned char)s21_strlen(p);
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, s21_strlen(str));
@@ -94,16 +97,24 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
   *i += (len);
 }
 
-void c_specific(va_list list, char *str, int *i) {
+void c_specific(va_list list, char* str, int* i) {
   char c = va_arg(list, int);
   s21_memset(&str[*i], c, 1);
   *i += 1;
 }
 
-void flag_plus(va_list list, char *str, int *i, int *num) {
+void flag_plus(va_list list, char* str, int* i, int* num) {
   *num = va_arg(list, unsigned int);
-  if(*num > 0) {
+  if (*num > 0) {
     s21_memset(&str[*i], '+', 1);
+    *i += 1;
+  }
+}
+
+void flag_space(va_list list, char* str, int* i, int* num) {
+  *num = va_arg(list, unsigned int);
+  if (*num > 0) {
+    s21_memset(&str[*i], ' ', 1);
     *i += 1;
   }
 }

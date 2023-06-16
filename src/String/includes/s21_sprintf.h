@@ -14,5 +14,6 @@ void s_specific(va_list, char*, unsigned char, int*, char*);
 void u_specific(void);
 void percent_specific(void);
 void flag_plus(va_list list, char *str, int *i, int *num);
+void flag_space(va_list list, char* str, int* i, int* num);
 
 #endif
