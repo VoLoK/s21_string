@@ -11,6 +11,10 @@ int s21_sprintf(char* str, const char* format, ...) {
   unsigned char len = ' ';
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
+      if (*format++ == '.') {
+        //				format++;
+      }
+      num2 = get_num((char**)&format);
       switch (*format++) {
         case 'c':
           c_specific();
@@ -19,7 +23,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str);
           break;
         case 'f':
-          f_specific(list, p, temp, len, &i, str);
+          f_specific(list, value, p, temp, len, &i, str, num2);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -38,6 +42,20 @@ int s21_sprintf(char* str, const char* format, ...) {
   }
   va_end(list);
   return res;
+}
+
+int get_num(char** str) {
+  char ch;
+  char temp[10];
+  char* p = temp;
+  char* q = *str;
+  while ((ch = *q) != '.' && ch < ':') {
+    *p++ = ch;
+    q++;
+  }
+  *str = q;
+  *p = 0;
+  return atoi(temp);
 }
 
 char* s21_itoa(int input, char* buff, int num) {
@@ -96,7 +114,7 @@ void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
   i += len;
 }
 
-char* f_to_str(char* buff, int size, float value, int digits) {
+char* f_to_str(char* buff, int size, float value, int digits, int* flag) {
   int i = 0;
   int factor = 10;
   int num = (int)value;
@@ -119,15 +137,32 @@ char* f_to_str(char* buff, int size, float value, int digits) {
     p++;
     num += sub;
   }
-
+  i = 0;
+  int fiff = value * 10;
+  if (fiff % 10 >= 5) {
+    num = num + 1;
+    double fio = num - value;
+    if (fio <= 0.11573) {
+      *flag = 1;
+    }
+    while (i++ < digits) {
+      p--;
+      *(p - digits) = (num % 10) + '0';
+      num = num / 10;
+    }
+  }
   return &buff[size - 1] - digits;
 }
 
 char* s21_ftoa(char* buff, int size, float value, int digits) {
   char* p;
+  int flag = 0;
   char* q;
-  p = f_to_str(buff, size, value, digits);
+  p = f_to_str(buff, size, value, digits, &flag);
   *--p = '.';
+  if (flag == 1) {
+    value += 1;
+  }
   q = s21_itoa((int)(p - &buff[0]), buff, (int)value);
   if (value > -1 && value < 0) {
     *--q = '-';
