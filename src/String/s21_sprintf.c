@@ -3,6 +3,7 @@
 int s21_sprintf(char* str, const char* format, ...) {
   char* p = "";
   int res = 0;
+  int pers_num = 0;
   va_list list;
   va_start(list, format);
   char temp[S21_TEXTMAX];
@@ -11,6 +12,9 @@ int s21_sprintf(char* str, const char* format, ...) {
   unsigned char len = ' ';
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
+      if (*format++ == '.') {
+        pers_num = get_num((char**)&format);
+      }
       switch (*format++) {
         case 'c':
           c_specific();
@@ -19,7 +23,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str);
           break;
         case 'f':
-          f_specific(list, p, temp, len, &i, str);
+          f_specific(list, p, temp, len, &i, str, pers_num);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -38,6 +42,20 @@ int s21_sprintf(char* str, const char* format, ...) {
   }
   va_end(list);
   return res;
+}
+
+int get_num(char** str) {
+  char ch;
+  char temp[10];
+  char* copy = temp;
+  char* str_copy = *str;
+  while ((ch = *str_copy) != '.' && ch < ':') {
+    *copy++ = ch;
+    str_copy++;
+  }
+  *str = str_copy;
+  *copy = 0;
+  return atoi(temp);
 }
 
 char* s21_itoa(int input, char* buff, int num) {
@@ -88,15 +106,15 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
 void c_specific() {}
 
 void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
-                char* str) {
+                char* str, int pers_num) {
   float value = (float)va_arg(list, double);
-  p = s21_ftoa(temp, sizeof(temp), value, 0);
+  p = s21_ftoa(temp, sizeof(temp), value, pers_num);
   len = (unsigned char)s21_strlen(p);
   s21_strncat(&str[*i], p, s21_strlen(p));
   i += len;
 }
 
-char* f_to_str(char* buff, int size, float value, int digits) {
+char* f_to_str(char* buff, int size, float value, int digits, int* flag) {
   int i = 0;
   int factor = 10;
   int num = (int)value;
@@ -108,9 +126,6 @@ char* f_to_str(char* buff, int size, float value, int digits) {
     num *= -1;
     value *= -1;
   }
-  if (digits == 0) {
-    digits = 6;
-  }
   while (i++ < digits) {
     value = value * factor;
     num = num * factor;
@@ -119,15 +134,34 @@ char* f_to_str(char* buff, int size, float value, int digits) {
     p++;
     num += sub;
   }
-
+  i = 0;
+  int copy_value = value * 10;
+  if (copy_value % 10 >= 5) {
+    num = num + 1;
+    double ost = num - value;
+    if (ost <= 0.11573) {
+      *flag = 1;
+    }
+    while (i++ < digits) {
+      p--;
+      *(p - digits) = (num % 10) + '0';
+      num = num / 10;
+    }
+  }
   return &buff[size - 1] - digits;
 }
 
 char* s21_ftoa(char* buff, int size, float value, int digits) {
   char* p;
+  int flag = 0;
   char* q;
-  p = f_to_str(buff, size, value, digits);
-  *--p = '.';
+  p = f_to_str(buff, size, value, digits, &flag);
+  if (*p != '\0') {
+    *--p = '.';
+  }
+  if (flag == 1) {
+    value += 1;
+  }
   q = s21_itoa((int)(p - &buff[0]), buff, (int)value);
   if (value > -1 && value < 0) {
     *--q = '-';
