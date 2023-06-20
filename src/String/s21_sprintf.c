@@ -13,9 +13,8 @@ int s21_sprintf(char* str, const char* format, ...) {
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
       if (*format++ == '.') {
-        //				format++;
+        pers_num = get_num((char**)&format);
       }
-      pers_num = get_num((char**)&format);
       switch (*format++) {
         case 'c':
           c_specific();
