@@ -12,12 +12,12 @@ TEST_SRC_DIR?=./StringUnittest
 TEST_INC_DIR?=./StringUnittest/includes
 TEST_OBJ_DIR?=./StringUnittest/obj
 
-INC:=$(shell find $(INC_DIR) -name "*.h")
-SRC:=$(shell find $(SRC_DIR) -name "*.c")
+INC:=$(shell find $(INC_DIR) -name "s21_*.h")
+SRC:=$(shell find $(SRC_DIR) -name "s21_*.c")
 OBJ:=$(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
 
-TEST_INC:=$(shell find $(TEST_INC_DIR) -name "*.h")
-TEST_SRC:=$(shell find $(TEST_SRC_DIR) -name "*.c")
+TEST_INC:=$(shell find $(TEST_INC_DIR) -name "s21_*.h")
+TEST_SRC:=$(shell find $(TEST_SRC_DIR) -name "s21_*.c")
 TEST_OBJ:=$(addprefix $(TEST_OBJ_DIR)/, $(notdir $(TEST_SRC:.c=.o)))
 
 AR:= ar rc

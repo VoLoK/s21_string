@@ -9,18 +9,26 @@ int s21_sprintf(char* str, const char* format, ...) {
   char temp[S21_TEXTMAX];
   int size = (int)s21_strlen(format);
   int i = 0;
+  int num = 0;
   unsigned char len = ' ';
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
+      if (*format == '+') {
+        flag_plus(list, str, &i, &num);
+        format++;
+      } else if (*format == ' ') {
+        flag_space(list, str, &i, &num);
+        format++;
+      }
       if (*format++ == '.') {
         pers_num = get_num((char**)&format);
       }
       switch (*format++) {
         case 'c':
-          c_specific();
+          c_specific(list, str, &i);
           break;
         case 'd':
-          d_specific(temp, list, p, len, &i, str);
+          d_specific(temp, list, p, len, &i, str, num);
           break;
         case 'f':
           f_specific(list, p, temp, len, &i, str, pers_num);
@@ -87,8 +95,12 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
 }
 
 void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
-                char* str) {
-  p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
+                char* str, int num) {
+  if (num != 0) {
+    p = s21_itoa(sizeof(temp), temp, num);
+  } else {
+    p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
+  }
   len = (unsigned char)s21_strlen(p);
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, s21_strlen(str));
@@ -103,7 +115,27 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
   *i += (len);
 }
 
-void c_specific() {}
+void c_specific(va_list list, char* str, int* i) {
+  char c = va_arg(list, int);
+  s21_memset(&str[*i], c, 1);
+  *i += 1;
+}
+
+void flag_plus(va_list list, char* str, int* i, int* num) {
+  *num = va_arg(list, unsigned int);
+  if (*num > 0) {
+    s21_memset(&str[*i], '+', 1);
+    *i += 1;
+  }
+}
+
+void flag_space(va_list list, char* str, int* i, int* num) {
+  *num = va_arg(list, unsigned int);
+  if (*num > 0) {
+    s21_memset(&str[*i], ' ', 1);
+    *i += 1;
+  }
+}
 
 void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
                 char* str, int pers_num) {
