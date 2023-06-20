@@ -15,11 +15,10 @@ int s21_sprintf(char* str, const char* format, ...) {
     if (*format++ == '%') {
       if (*format == '+') {
         flag_plus(list, str, &i, &num);
-          format++;
-      }
-      else if (*format == ' ') {
+        format++;
+      } else if (*format == ' ') {
         flag_space(list, str, &i, &num);
-          format++;
+        format++;
       }
       if (*format++ == '.') {
         pers_num = get_num((char**)&format);
