@@ -20,6 +20,7 @@ int s21_sprintf(char* str, const char* format, ...) {
       else if (*format == ' ') {
         flag_space(list, str, &i, &num);
           format++;
+      }
       if (*format++ == '.') {
         pers_num = get_num((char**)&format);
       }
