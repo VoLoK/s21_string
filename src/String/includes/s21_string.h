@@ -3,7 +3,6 @@
 #define s21_NULL ((void *)0)
 #define S21_TEXTMAX 2048
 
-#include <stdio.h>
 #include <stdlib.h>
 
 typedef long unsigned s21_size_t;
