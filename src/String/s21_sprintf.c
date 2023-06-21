@@ -20,8 +20,9 @@ int s21_sprintf(char* str, const char* format, ...) {
         flag_space(list, str, &i, &num);
         format++;
       }
-      if (*format++ == '.') {
+      if (*format == '.') {
         pers_num = get_num((char**)&format);
+        format++;
       }
       switch (*format++) {
         case 'c':
@@ -35,6 +36,9 @@ int s21_sprintf(char* str, const char* format, ...) {
           break;
         case 's':
           s_specific(list, p, len, &i, str);
+          break;
+        case 'o':
+          o_specific(list, str, &i);
           break;
         case 'u':
           u_specific();
@@ -135,6 +139,35 @@ void flag_space(va_list list, char* str, int* i, int* num) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
   }
+}
+
+void o_specific(va_list list, char* str, int* i) {
+  int num = va_arg(list, int);
+  char str2[100] = "";
+  int rez = 0;
+  int j = 0;
+  while (num != 0 && num > 0) {
+    rez = num % 8;
+    num = num / 8;
+    s21_memset(&str2[j], rez + '0', 1);
+    j++;
+  }
+  s21_reverse(str2);
+  s21_size_t len_str2 = s21_strlen(str2);
+  s21_memcpy(&str[*i], str2, len_str2);
+  *i += len_str2;
+}
+
+char* s21_reverse(char* str) {
+  char tmp;
+  s21_size_t i, j;
+  s21_size_t len_str = s21_strlen(str);
+  for (i = 0, j = len_str - 1; i < j; i++, j--) {
+    tmp = str[i];
+    str[i] = str[j];
+    str[j] = tmp;
+  }
+  return str;
 }
 
 void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
