@@ -22,6 +22,5 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
   s21_memcpy(res + start_index + str_len, src + start_index,
              src_len - start_index);
   res[s21_strlen(res)] = '\0';
-  free(res);
   return (void *)res;
 }
