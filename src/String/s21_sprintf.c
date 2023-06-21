@@ -142,23 +142,23 @@ void flag_space(va_list list, char* str, int* i, int* num) {
 }
 
 void o_specific(va_list list, char* str, int* i) {
-    int num = va_arg(list, int);
-    char str2[100] = "";
-    int rez = 0;
-    int j = 0;
-    while (num != 0 && num > 0) {
-        rez = num % 8;
-        num = num / 8;
-        s21_memset(&str2[j], rez + '0', 1);
-        j++;
-    }
-        s21_reverse(str2);
-        s21_size_t len_str2 = s21_strlen(str2);
-        s21_memcpy(&str[*i], str2, len_str2);
-        *i += len_str2;
-    }
+  int num = va_arg(list, int);
+  char str2[100] = "";
+  int rez = 0;
+  int j = 0;
+  while (num != 0 && num > 0) {
+    rez = num % 8;
+    num = num / 8;
+    s21_memset(&str2[j], rez + '0', 1);
+    j++;
+  }
+  s21_reverse(str2);
+  s21_size_t len_str2 = s21_strlen(str2);
+  s21_memcpy(&str[*i], str2, len_str2);
+  *i += len_str2;
+}
 
-char *s21_reverse(char *str) {
+char* s21_reverse(char* str) {
   char tmp;
   s21_size_t i, j;
   s21_size_t len_str = s21_strlen(str);

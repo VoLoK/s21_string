@@ -19,6 +19,6 @@ char* s21_ftoa(char* buff, int size, float val, int digits);
 int get_num(char** str);
 int atoi(const char* str);
 void o_specific(va_list list, char* str, int* i);
-char *s21_reverse(char *str);
+char* s21_reverse(char* str);
 
 #endif
