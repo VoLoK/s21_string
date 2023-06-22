@@ -21,5 +21,7 @@ s21_size_t s21_strlen(const char *str);
 char *s21_strchr(const char *str, int c);
 char *s21_strpbrk(const char *s1, const char *s2);
 char *s21_strrchr(const char *str, int c);
+void *s21_to_upper(const char *str);
+void *s21_to_lower(const char *str);
 
 #endif
