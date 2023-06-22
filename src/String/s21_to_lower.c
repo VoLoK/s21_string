@@ -4,7 +4,8 @@ void *s21_to_lower(const char *str) {
   if (!str || *str == '\0') {
     return NULL;
   }
-  char *copy_str = (char *)malloc(s21_strlen(str));
+  int len = s21_strlen(str);
+  char *copy_str = (char *)malloc(len * sizeof(char));
   for (int i = 0; str[i] != '\0'; i++) { 
     if (str[i] >= 'A' && str[i] <= 'Z') {
       copy_str[i] = str[i] + 32;
@@ -12,5 +13,6 @@ void *s21_to_lower(const char *str) {
       copy_str[i] = str[i];
     }
   }
+  str[len] = '\0';
   return (copy_str);
 }
