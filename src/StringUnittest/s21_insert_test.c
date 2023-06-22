@@ -54,6 +54,15 @@ START_TEST(insert_NULL) {
 }
 END_TEST
 
+START_TEST(insert_in_NULL) {
+  char s21_str[] = "Some text";
+  char* s21_src = s21_NULL;
+  s21_size_t index = 0;
+
+  ck_assert_pstr_eq(s21_insert(s21_src, s21_str, index), s21_NULL);
+}
+END_TEST
+
 START_TEST(insert_in_middle) {
   char s21_str[] = "ret";
   char s21_src[] = "consectetur";
@@ -73,6 +82,7 @@ Suite* suite_insert() {
   tcase_add_test(tcase_core, insert_in_end);
   tcase_add_test(tcase_core, insert_in_start);
   tcase_add_test(tcase_core, insert_NULL);
+  tcase_add_test(tcase_core, insert_in_NULL);
   tcase_add_test(tcase_core, insert_in_middle);
 
   suite_add_tcase(suite, tcase_core);

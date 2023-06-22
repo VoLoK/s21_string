@@ -9,69 +9,68 @@ START_TEST(trim_null) {
 END_TEST
 
 START_TEST(trim_in_start) {
-    char s21_src[] = "  Hi";
-    char* s21_trim_chars = "    ";
+  char s21_src[] = "  Hi";
+  char* s21_trim_chars = " ";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
 }
 END_TEST
 
 START_TEST(trim_in_end) {
-    char s21_src[] = "Hi    ";
-    char* s21_trim_chars = "    ";
+  char s21_src[] = "Hi    ";
+  char* s21_trim_chars = " ";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
 }
 END_TEST
 
 START_TEST(trim_in_start_and_end) {
-    char s21_src[] = "  Hi    ";
-    char* s21_trim_chars = "    ";
+  char s21_src[] = "  Hi    ";
+  char* s21_trim_chars = " ";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hi");
 }
 END_TEST
 
 START_TEST(simple_trim) {
-    char s21_src[] = "Hello Peer";
-    char* s21_trim_chars = "Hel";
+  char s21_src[] = "Hello Peer";
+  char* s21_trim_chars = "Hel";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "o Peer");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "o Peer");
 }
 END_TEST
 
 START_TEST(trim_all) {
-    char s21_src[] = "Adventure";
-    char* s21_trim_chars = "Adventure";
+  char s21_src[] = "Adventure";
+  char* s21_trim_chars = "Adventure";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "");
 }
 END_TEST
 
 START_TEST(trim_in_null) {
-    char* s21_src = s21_NULL;
-    char* s21_trim_chars = " ";
+  char* s21_src = s21_NULL;
+  char* s21_trim_chars = " ";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), s21_NULL);
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), s21_NULL);
 }
 END_TEST
 
 START_TEST(trim_failure) {
-    char s21_src[] = "Hello";
-    char* s21_trim_chars = "l";
+  char s21_src[] = "Hello";
+  char* s21_trim_chars = "l";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hello");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hello");
 }
 END_TEST
 
 START_TEST(non_existent_trim) {
-    char s21_src[] = "Hello";
-    char* s21_trim_chars = "m";
+  char s21_src[] = "Hello";
+  char* s21_trim_chars = "m";
 
-    ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hello");
+  ck_assert_pstr_eq(s21_trim(s21_src, s21_trim_chars), "Hello");
 }
 END_TEST
-
 
 Suite* suite_trim() {
   Suite* suite = suite_create("trim_suite");
