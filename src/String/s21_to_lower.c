@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "s21_string.h"
 
 void *s21_to_lower(const char *str) {
@@ -8,13 +6,12 @@ void *s21_to_lower(const char *str) {
     return NULL;
   }
   char *copy_str = (char *)malloc(s21_strlen(str));
-  while (str[i] != '\0') {
+  for (int i = 0; str[i] != '\0'; i++) { 
     if (str[i] >= 'A' && str[i] <= 'Z') {
       copy_str[i] = str[i] + 32;
     } else {
       copy_str[i] = str[i];
     }
-    i++;
   }
   return (copy_str);
 }
