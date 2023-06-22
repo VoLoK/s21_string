@@ -21,6 +21,7 @@ Suite *suite_strrchr(void);
 Suite *suite_strstr(void);
 Suite *suite_strtok(void);
 Suite *suite_insert(void);
+Suite *suite_trim(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);
