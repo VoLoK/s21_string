@@ -1,8 +1,7 @@
 #include "s21_string.h"
 
 void *s21_to_lower(const char *str) {
-  int i = 0;
-  if (!str || str[i] == '\0') {
+  if (!str || *str == '\0') {
     return NULL;
   }
   char *copy_str = (char *)malloc(s21_strlen(str));
