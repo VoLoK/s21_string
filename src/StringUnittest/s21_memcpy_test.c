@@ -14,7 +14,7 @@ END_TEST
 
 START_TEST(n_zero) {
   char s21_dest[5] = "";
-  const char s21_src = "12345";
+  const char s21_src[] = "12345";
   const char src[] = "12345";
   char dest[5] = "";
   s21_size_t n = 0;
