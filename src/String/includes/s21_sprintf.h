@@ -12,7 +12,6 @@ void c_specific(va_list list, char* str, int* i);
 void f_specific(va_list, char*, char*, unsigned char, int*, char*, int);
 void s_specific(va_list, char*, unsigned char, int*, char*);
 void u_specific(void);
-void percent_specific(void);
 void flag_plus(va_list list, char* str, int* i, int* num);
 void flag_space(va_list list, char* str, int* i, int* num);
 char* s21_ftoa(char* buff, int size, float val, int digits);
@@ -20,5 +19,7 @@ int get_num(char** str);
 int atoi(const char* str);
 void o_specific(va_list list, char* str, int* i);
 char* s21_reverse(char* str);
+void x_specific(va_list list, char* str, int* i, int spec_x);
+void X_specific(va_list list, char* str, int* i);
 
 #endif
