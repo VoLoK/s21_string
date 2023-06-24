@@ -241,11 +241,11 @@ void u_specific(void) {}
 
 void percent_specific(void) {}
 
-//int main () {
-//    char s21_buff[100] = "";
-//    char buff[100] = "";
-//    int s21 = 3;
-//    int system = 3;
+// int main () {
+//     char s21_buff[100] = "";
+//     char buff[100] = "";
+//     int s21 = 3;
+//     int system = 3;
 ////      s21_sprintf(s21_buff, "This is %d number", s21);
 //      sprintf(buff, "This is %d number", system);
 //    printf("system: %s\n", buff);
