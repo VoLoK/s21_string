@@ -40,6 +40,7 @@ void run_tests(void) {
                          suite_strtok(),
                          suite_insert(),
                          suite_trim(),
+                         suite_sprintf(),
                          NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
