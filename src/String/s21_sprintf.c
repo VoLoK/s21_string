@@ -10,7 +10,6 @@ int s21_sprintf(char* str, const char* format, ...) {
   int size = (int)s21_strlen(format);
   int i = 0;
   int num = -1;
-  unsigned char len = ' ';
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
