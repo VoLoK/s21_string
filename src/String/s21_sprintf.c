@@ -9,7 +9,7 @@ int s21_sprintf(char* str, const char* format, ...) {
   char temp[S21_TEXTMAX];
   int size = (int)s21_strlen(format);
   int i = 0;
-  int num = 0;
+  int num = -1;
   unsigned char len = ' ';
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
@@ -105,7 +105,7 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
 
 void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
                 char* str, int num, int* size) {
-  if (num != 0) {
+  if (num != -1) {
     p = s21_itoa(sizeof(temp), temp, num);
   } else {
     p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
@@ -133,7 +133,7 @@ void c_specific(va_list list, char* str, int* i) {
 
 void flag_plus(va_list list, char* str, int* i, int* num) {
   *num = va_arg(list, unsigned int);
-  if (*num > 0) {
+    if (*num >= 0) {
     s21_memset(&str[*i], '+', 1);
     *i += 1;
   }
@@ -141,7 +141,7 @@ void flag_plus(va_list list, char* str, int* i, int* num) {
 
 void flag_space(va_list list, char* str, int* i, int* num) {
   *num = va_arg(list, unsigned int);
-  if (*num > 0) {
+  if (*num >= 0) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
   }
@@ -273,13 +273,15 @@ void u_specific(void) {}
 
 void percent_specific(void) {}
 
-//int main () {
-//    char s21_buff[100] = "";
-//    char buff[100] = "";
-//    int s21 = 3;
-//    int system = 3;
-////      s21_sprintf(s21_buff, "This is %d number", s21);
-//      sprintf(buff, "This is %d number", system);
-//    printf("system: %s\n", buff);
-////    printf("my: %s\n", s21_buff);
-//}
+    //  int main () {
+    //    char buffer1[100];
+    //    char buffer2[100];
+    //    //int str3 = 4.3;
+    //  //    size_t n = strlen(str3);
+    //  //    size_t m = s21_strlen(str3);
+    //  //    printf("%lu %lu \n", n, m);
+
+    //    s21_sprintf(buffer1, "s21   :% d", 0);
+    //    sprintf(buffer2, "origin: % d", 0);
+    //    printf("%s \n%s\n", buffer1, buffer2);
+    //  }
