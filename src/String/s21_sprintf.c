@@ -3,7 +3,7 @@
 int s21_sprintf(char* str, const char* format, ...) {
   char* p = "";
   int res = 0;
-  int pers_num = 0;
+  int pers_num = 6;
   va_list list;
   va_start(list, format);
   char temp[S21_TEXTMAX];
@@ -11,6 +11,7 @@ int s21_sprintf(char* str, const char* format, ...) {
   int i = 0;
   int num = -1;
   unsigned char len = ' ';
+  s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
       if (*format == '+') {
@@ -21,8 +22,8 @@ int s21_sprintf(char* str, const char* format, ...) {
         format++;
       }
       if (*format == '.') {
-        pers_num = get_num((char**)&format);
         format++;
+        pers_num = get_num((char**)&format);
       }
       switch (*format++) {
         case 'c':
@@ -32,7 +33,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str, num, &size);
           break;
         case 'f':
-          f_specific(list, p, temp, len, &i, str, pers_num);
+          str = (char*) f_specific(list, p, temp, len, &i, str, pers_num, &size);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -103,18 +104,17 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
   return p;
 }
 
-void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
+void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
                 char* str, int num, int* size) {
   if (num != -1) {
-    p = s21_itoa(sizeof(temp), temp, num);
+    p = s21_itoa(100, temp, num);
   } else {
-    p = s21_itoa(sizeof(temp), temp, va_arg(list, unsigned int));
+    p = s21_itoa(100, temp, va_arg(list, int));
   }
-  len = (unsigned char)s21_strlen(p);
-  s21_memset(&str[*i], ' ', 0);
-  s21_strncat(&str[*i], p, s21_strlen(str));
-  *i += (len);
-  *size += (len);
+  len = s21_strlen(p);
+  s21_strncat(str, p, len);
+  *i += len;
+  *size += len;
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
@@ -204,13 +204,15 @@ char* s21_reverse(char* str) {
   return str;
 }
 
-void f_specific(va_list list, char* p, char* temp, unsigned char len, int* i,
-                char* str, int pers_num) {
+char* f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
+                char* str, int pers_num, int* size) {
   float value = (float)va_arg(list, double);
   p = s21_ftoa(temp, sizeof(temp), value, pers_num);
-  len = (unsigned char)s21_strlen(p);
+  len = s21_strlen(p);
   s21_strncat(&str[*i], p, s21_strlen(p));
-  i += len;
+  *i += len;
+    *size += len;
+    return str;
 }
 
 char* f_to_str(char* buff, int size, float value, int digits, int* flag) {
