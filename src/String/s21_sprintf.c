@@ -31,7 +31,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           c_specific(list, str, &i);
           break;
         case 'd':
-              d_specific(temp, list, p, len, &i, str, num, &size);
+          d_specific(temp, list, p, len, &i, str, num, &size);
           break;
         case 'f':
           str = (char*) f_specific(list, p, temp, len, &i, str, pers_num, &size);
@@ -42,12 +42,17 @@ int s21_sprintf(char* str, const char* format, ...) {
         case 'o':
           o_specific(list, str, &i);
           break;
+        case 'x':
+          x_specific(list, str, &i, 1);
+          break;
+        case 'X':
+          x_specific(list, str, &i, 0);
+          break;
         case 'u':
           u_specific();
           break;
         case '%':
           percent_specific();
-          break;
       }
     } else {
       str[i++] = *(format - 1);
@@ -145,19 +150,47 @@ void flag_space(va_list list, char* str, int* i, int* num) {
 
 void o_specific(va_list list, char* str, int* i) {
   int num = va_arg(list, int);
-  char str2[100] = "";
-  int rez = 0;
-  int j = 0;
-  while (num != 0 && num > 0) {
-    rez = num % 8;
-    num = num / 8;
-    s21_memset(&str2[j], rez + '0', 1);
-    j++;
+  if (num == 0) {
+    s21_memset(&str[*i], '0', 1);
+    *i += 1;
+  } else {
+    char str2[100] = "";
+    int rez = 0;
+    int j = 0;
+    while (num != 0 && num > 0) {
+      rez = num % 8;
+      num = num / 8;
+      s21_memset(&str2[j], rez + '0', 1);
+      j++;
+    }
+    s21_reverse(str2);
+    s21_size_t len_str2 = s21_strlen(str2);
+    s21_memcpy(&str[*i], str2, len_str2);
+    *i += len_str2;
   }
-  s21_reverse(str2);
-  s21_size_t len_str2 = s21_strlen(str2);
-  s21_memcpy(&str[*i], str2, len_str2);
-  *i += len_str2;
+}
+
+void x_specific(va_list list, char* str, int* i, int spec_x) {
+  int num = va_arg(list, int);
+  if (num == 0) {
+    s21_memset(&str[*i], '0', 1);
+    *i += 1;
+  } else {
+    char str2[100] = "";
+    int rez = 0;
+    int j = 0;
+    char* format = spec_x ? "0123456789abcdef" : "0123456789ABCDEF";
+    while (num != 0 && num > 0) {
+      rez = num % 16;
+      num = num / 16;
+      if (rez) s21_memset(&str2[j], format[rez], 1);
+      j++;
+    }
+    s21_reverse(str2);
+    s21_size_t len_str2 = s21_strlen(str2);
+    s21_memcpy(&str[*i], str2, len_str2);
+    *i += len_str2;
+  }
 }
 
 char* s21_reverse(char* str) {
@@ -239,5 +272,17 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   s21_strncat(q, p, p_count);
   return q;
 }
+void u_specific(void) {}
 
 void percent_specific(void) {}
+
+//int main () {
+//    char s21_buff[100] = "";
+//    char buff[100] = "";
+//    int s21 = 3;
+//    int system = 3;
+////      s21_sprintf(s21_buff, "This is %d number", s21);
+//      sprintf(buff, "This is %d number", system);
+//    printf("system: %s\n", buff);
+////    printf("my: %s\n", s21_buff);
+//}
