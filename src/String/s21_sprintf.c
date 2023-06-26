@@ -1,7 +1,5 @@
 #include "s21_sprintf.h"
 
-#include <string.h>
-
 int s21_sprintf(char* str, const char* format, ...) {
   char* p = "";
   int res = 0;
