@@ -24,6 +24,7 @@ Suite *suite_insert(void);
 Suite *suite_trim(void);
 Suite *suite_to_upper(void);
 Suite *suite_to_lower(void);
+Suite *suite_sprintf(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);

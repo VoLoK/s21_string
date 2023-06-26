@@ -29,7 +29,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           c_specific(list, str, &i);
           break;
         case 'd':
-          d_specific(temp, list, p, len, &i, str, num);
+          d_specific(temp, list, p, len, &i, str, num, &size);
           break;
         case 'f':
           f_specific(list, p, temp, len, &i, str, pers_num);
@@ -104,7 +104,7 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
 }
 
 void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
-                char* str, int num) {
+                char* str, int num, int* size) {
   if (num != 0) {
     p = s21_itoa(sizeof(temp), temp, num);
   } else {
@@ -114,6 +114,7 @@ void d_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, s21_strlen(str));
   *i += (len);
+  *size += (len);
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
@@ -269,6 +270,15 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   return q;
 }
 
-percent_specific(){}
+void percent_specific(void) {}
 
-
+//int main () {
+//    char s21_buff[100] = "";
+//    char buff[100] = "";
+//    int s21 = 3;
+//    int system = 3;
+////      s21_sprintf(s21_buff, "This is %d number", s21);
+//      sprintf(buff, "This is %d number", system);
+//    printf("system: %s\n", buff);
+////    printf("my: %s\n", s21_buff);
+//}

@@ -42,6 +42,7 @@ void run_tests(void) {
                          suite_trim(),
                          suite_to_upper(),
                          suite_to_lower(),
+                         suite_sprintf(),
                          NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
