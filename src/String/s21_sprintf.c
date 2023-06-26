@@ -269,6 +269,7 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   s21_strncat(q, p, p_count);
   return q;
 }
+void u_specific(void) {}
 
 void percent_specific(void) {}
 
