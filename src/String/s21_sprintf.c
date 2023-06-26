@@ -11,7 +11,7 @@ int s21_sprintf(char* str, const char* format, ...) {
   char temp[S21_TEXTMAX];
   int size = (int)s21_strlen(format);
   int i = 0;
-  int num = 0;
+  int num = -1;
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
@@ -107,7 +107,7 @@ char* s21_convert(char* buff, int size, unsigned int num, int base) {
 
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
                 char* str, int num, int* size) {
-  if (num != 0) {
+  if (num != -1) {
     p = s21_itoa(100, temp, num);
   } else {
     p = s21_itoa(100, temp, va_arg(list, int));
@@ -142,7 +142,7 @@ void flag_plus(va_list list, char* str, int* i, int* num) {
 
 void flag_space(va_list list, char* str, int* i, int* num) {
   *num = va_arg(list, unsigned int);
-  if (*num > 0) {
+  if (*num >= 0) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
   }
