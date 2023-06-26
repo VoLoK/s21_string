@@ -46,6 +46,11 @@ int s21_sprintf(char* str, const char* format, ...) {
         case 'X':
           x_specific(list, str, &i, 0);
           break;
+        case 'u':
+          u_specific();
+          break;
+        case '%':
+          percent_specific();
       }
     } else {
       str[i++] = *(format - 1);
@@ -263,3 +268,7 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   s21_strncat(q, p, p_count);
   return q;
 }
+
+percent_specific(){}
+
+
