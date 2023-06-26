@@ -21,5 +21,6 @@ void o_specific(va_list list, char* str, int* i);
 char* s21_reverse(char* str);
 void x_specific(va_list list, char* str, int* i, int spec_x);
 void X_specific(va_list list, char* str, int* i);
+void percent_specific(void);
 
 #endif
