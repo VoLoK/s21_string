@@ -5,7 +5,6 @@
 
 #define S21_TEXTMAX 2048
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
 
