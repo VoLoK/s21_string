@@ -84,6 +84,16 @@ START_TEST(s_str_in_middle_of_str) {
 }
 END_TEST
 
+START_TEST(c_simple_char) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%c", 'c');
+  sprintf(buff, "%c", 'c');
+  
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 START_TEST(f_simple) {
   char s21_buff[100] = "";
   char buff[100] = "";
@@ -92,6 +102,16 @@ START_TEST(f_simple) {
   s21_sprintf(s21_buff, "This is %f number", s21);
   sprintf(buff, "This is %f number", system);
 
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(c_number_ASCII) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%c", 67);
+  sprintf(buff, "%c", 67);
+  
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -108,6 +128,15 @@ START_TEST(f_simple_zero) {
 }
 END_TEST
 
+START_TEST(c_number_char) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%c", '8');
+  sprintf(buff, "%c", '8');
+ ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 START_TEST(f_big_number) {
   char s21_buff[100] = "";
   char buff[100] = "";
@@ -116,6 +145,15 @@ START_TEST(f_big_number) {
   s21_sprintf(s21_buff, "This is %f number", s21);
   sprintf(buff, "This is %f number", system);
 
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(c_space_char) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%c", ' ');
+  sprintf(buff, "%c", ' ');
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -132,6 +170,15 @@ START_TEST(f_big_int_part) {
 }
 END_TEST
 
+START_TEST(flag_plus_simple_test) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%+d", 21);
+  sprintf(buff, "%+d", 21);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 START_TEST(f_zero) {
   char s21_buff[100] = "";
   char buff[100] = "";
@@ -140,6 +187,15 @@ START_TEST(f_zero) {
   s21_sprintf(s21_buff, "This is %f number", s21);
   sprintf(buff, "This is %f number", system);
 
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(flag_plus_negative_number) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%+d", -250);
+  sprintf(buff, "%+d", -250);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -156,6 +212,15 @@ START_TEST(exactness_simple) {
 }
 END_TEST
 
+START_TEST(flag_plus_zero) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%+d", 0);
+  sprintf(buff, "%+d", 0);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 START_TEST(exactness_with_simple_rounding) {
   char s21_buff[100] = "";
   char buff[100] = "";
@@ -168,6 +233,15 @@ START_TEST(exactness_with_simple_rounding) {
 }
 END_TEST
 
+START_TEST(flag_space_simple_test) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "% d", 25);
+  sprintf(buff, "% d", 25);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 START_TEST(exactness_with_hard_rounding) {
   char s21_buff[100] = "";
   char buff[100] = "";
@@ -176,6 +250,25 @@ START_TEST(exactness_with_hard_rounding) {
   s21_sprintf(s21_buff, "This is %.3f number", s21);
   sprintf(buff, "This is %.3f number", system);
 
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(flag_space_negative_number) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "% d", -1000);
+  sprintf(buff, "% d", -1000);
+
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(flag_space_zero) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "% d", 0);
+  sprintf(buff, "% d", 0);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -203,6 +296,16 @@ Suite* suite_sprintf() {
   tcase_add_test(tcase_core, s_empty_test);
   tcase_add_test(tcase_core, s_int_str_test);
   tcase_add_test(tcase_core, s_str_in_middle_of_str);
+  tcase_add_test(tcase_core, c_simple_char);
+  tcase_add_test(tcase_core, c_number_ASCII);
+  tcase_add_test(tcase_core, c_number_char);
+  tcase_add_test(tcase_core, c_space_char);
+  tcase_add_test(tcase_core, flag_plus_simple_test);
+  tcase_add_test(tcase_core, flag_plus_negative_number);
+  tcase_add_test(tcase_core, flag_plus_zero);
+  tcase_add_test(tcase_core, flag_space_simple_test);
+  tcase_add_test(tcase_core, flag_space_negative_number);
+  tcase_add_test(tcase_core, flag_space_zero);
   tcase_add_test(tcase_core, f_simple);
   tcase_add_test(tcase_core, f_simple_zero);
   tcase_add_test(tcase_core, f_big_number);
