@@ -32,7 +32,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str, num, &size);
           break;
         case 'f':
-          str = (char*) f_specific(list, p, temp, len, &i, str, pers_num, &size);
+          str = (char*)f_specific(list, p, temp, len, &i, str, pers_num, &size);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -61,6 +61,22 @@ int s21_sprintf(char* str, const char* format, ...) {
   return res;
 }
 
+void flag_plus(va_list list, char* str, int* i, int* num) {
+  *num = va_arg(list, unsigned int);
+  if (*num >= 0) {
+    s21_memset(&str[*i], '+', 1);
+    *i += 1;
+  }
+}
+
+void flag_space(va_list list, char* str, int* i, int* num) {
+  *num = va_arg(list, unsigned int);
+  if (*num >= 0) {
+    s21_memset(&str[*i], ' ', 1);
+    *i += 1;
+  }
+}
+
 int get_num(char** str) {
   char ch;
   char temp[10];
@@ -75,32 +91,10 @@ int get_num(char** str) {
   return atoi(temp);
 }
 
-char* s21_itoa(int input, char* buff, int num) {
-  int base = 10;
-  char* p;
-  if (num < 0) {
-    num = -num;
-    p = s21_convert(buff, input, num, base);
-    *--p = '-';
-  } else {
-    p = s21_convert(buff, input, num, base);
-  }
-  return p;
-}
-
-char* s21_convert(char* buff, int size, unsigned int num, int base) {
-  char* p;
-  p = &buff[size - 1];
-  *p = '\0';
-  if (num != 0) {
-    while (num != 0) {
-      *--p = "0123456789ABCDEF"[num % base];
-      num /= base;
-    }
-  } else {
-    *--p = '0';
-  }
-  return p;
+void c_specific(va_list list, char* str, int* i) {
+  char c = va_arg(list, int);
+  s21_memset(&str[*i], c, 1);
+  *i += 1;
 }
 
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
@@ -116,34 +110,23 @@ void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
   *size += len;
 }
 
+char* f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
+                 char* str, int pers_num, int* size) {
+  float value = (float)va_arg(list, double);
+  p = s21_ftoa(temp, sizeof(temp), value, pers_num);
+  len = s21_strlen(p);
+  s21_strncat(&str[*i], p, s21_strlen(p));
+  *i += len;
+  *size += len;
+  return str;
+}
+
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
   p = va_arg(list, char*);
   len = (unsigned char)s21_strlen(p);
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, len);
   *i += (len);
-}
-
-void c_specific(va_list list, char* str, int* i) {
-  char c = va_arg(list, int);
-  s21_memset(&str[*i], c, 1);
-  *i += 1;
-}
-
-void flag_plus(va_list list, char* str, int* i, int* num) {
-  *num = va_arg(list, unsigned int);
-    if (*num >= 0) {
-    s21_memset(&str[*i], '+', 1);
-    *i += 1;
-  }
-}
-
-void flag_space(va_list list, char* str, int* i, int* num) {
-  *num = va_arg(list, unsigned int);
-  if (*num >= 0) {
-    s21_memset(&str[*i], ' ', 1);
-    *i += 1;
-  }
 }
 
 void o_specific(va_list list, char* str, int* i) {
@@ -191,6 +174,34 @@ void x_specific(va_list list, char* str, int* i, int spec_x) {
   }
 }
 
+char* s21_itoa(int input, char* buff, int num) {
+  int base = 10;
+  char* p;
+  if (num < 0) {
+    num = -num;
+    p = s21_convert(buff, input, num, base);
+    *--p = '-';
+  } else {
+    p = s21_convert(buff, input, num, base);
+  }
+  return p;
+}
+
+char* s21_convert(char* buff, int size, unsigned int num, int base) {
+  char* p;
+  p = &buff[size - 1];
+  *p = '\0';
+  if (num != 0) {
+    while (num != 0) {
+      *--p = "0123456789ABCDEF"[num % base];
+      num /= base;
+    }
+  } else {
+    *--p = '0';
+  }
+  return p;
+}
+
 char* s21_reverse(char* str) {
   char tmp;
   s21_size_t i, j;
@@ -201,17 +212,6 @@ char* s21_reverse(char* str) {
     str[j] = tmp;
   }
   return str;
-}
-
-char* f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
-                char* str, int pers_num, int* size) {
-  float value = (float)va_arg(list, double);
-  p = s21_ftoa(temp, sizeof(temp), value, pers_num);
-  len = s21_strlen(p);
-  s21_strncat(&str[*i], p, s21_strlen(p));
-  *i += len;
-    *size += len;
-    return str;
 }
 
 char* f_to_str(char* buff, int size, float value, int digits, int* flag) {
@@ -270,19 +270,26 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   s21_strncat(q, p, p_count);
   return q;
 }
+
 void u_specific(void) {}
 
 void percent_specific(void) {}
 
-    //  int main () {
-    //    char buffer1[100];
-    //    char buffer2[100];
-    //    //int str3 = 4.3;
-    //  //    size_t n = strlen(str3);
-    //  //    size_t m = s21_strlen(str3);
-    //  //    printf("%lu %lu \n", n, m);
-
-    //    s21_sprintf(buffer1, "s21   :% d", 0);
-    //    sprintf(buffer2, "origin: % d", 0);
-    //    printf("%s \n%s\n", buffer1, buffer2);
-    //  }
+//   int main () {
+//     char buffer1[100];
+//     char buffer2[100];
+//     //int str3 = 4.3;
+//   //    size_t n = strlen(str3);
+//   //    size_t m = s21_strlen(str3);
+//   //    printf("%lu %lu \n", n, m);
+//
+////       char s21_buff[100] = "";
+////       char buff[100] = "";
+////       s21_sprintf(s21_buff, "% d", 0);
+////       sprintf(buff, "% d", 0);
+////       printf("%s \n%s\n", s21_buff, buff);
+//
+//     s21_sprintf(buffer1, "s21   : % d", 0);
+//     sprintf(buffer2, "origin: % d", 0);
+//     printf("%s \n%s\n", buffer1, buffer2);
+//   }
