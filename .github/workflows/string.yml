@@ -9,9 +9,22 @@ on:
       - master
 
 jobs:
-  build:
+  build-on-macos:
 
     runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Build project
+      run: |
+        cd src
+        make
+
+  build-on-ubuntu:
+
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
