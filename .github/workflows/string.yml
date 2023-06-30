@@ -24,7 +24,7 @@ jobs:
         make
 
     - name: Check
-      uses: libcheck/check
+      uses: libcheck/check@0.15.2
       
     - name: Run test
       run: |
