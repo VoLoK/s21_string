@@ -17,15 +17,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
+    - name: Check
+      uses: libcheck/check@0.15.2
     - name: Build project
       run: |
         cd src
         make
-
-    - name: Check
-      uses: libcheck/check@0.15.2
-      
     - name: Run test
       run: |
         cd src
