@@ -19,8 +19,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Install required dependencies
       run: sudo apt-get update && sudo apt-get install -y build-essential cmake pkg-config git automake autoconf libtool pkg-config texinfo tetex-bin
-    - name: Check
-      uses: libcheck/check@0.15.2
+
     - name: Build project
       run: |
         cd src
