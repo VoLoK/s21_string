@@ -3,6 +3,7 @@
 
 #include <check.h>
 #include <string.h>
+#include <stdio.h>
 #include "s21_string.h"
 
 Suite *suite_insert(void);
