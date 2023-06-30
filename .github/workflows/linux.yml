@@ -22,4 +22,5 @@ jobs:
         make
     - name: Run test
       run: |
+        cd src
         make test
