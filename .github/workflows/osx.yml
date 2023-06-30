@@ -1,4 +1,4 @@
-name: String CI
+name: MacOS
 
 on:
   push:
@@ -9,22 +9,17 @@ on:
       - master
 
 jobs:
-
-  build-on-ubuntu:
-
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: macos-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Install required dependencies
-      run: sudo apt-get update && sudo apt-get install -y build-essential git libtool check
-
+      run: brew install check
     - name: Build project
       run: |
         cd src
         make
     - name: Run test
       run: |
-        cd src
         make test
