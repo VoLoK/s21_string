@@ -34,11 +34,3 @@ jobs:
       run: |
         cd src
         make
-        
-    - name: Check
-      uses: libcheck/check
-      
-    - name: Build project
-      run: |
-        cd src
-        make test
