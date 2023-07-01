@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-on-macos:
     runs-on: macos-latest
     steps:
     - name: Checkout repository
