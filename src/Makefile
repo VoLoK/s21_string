@@ -70,13 +70,12 @@ clang-fix:
 
 clean:
 	@$(RM) $(OBJ)
-	@$(RM) -d $(OBJ_DIR)
+	@$(RM) -rd $(OBJ_DIR)
 	@$(RM) $(TEST_OBJ)
-	@$(RM) -d $(TEST_OBJ_DIR)
+	@$(RM) -rd $(TEST_OBJ_DIR)
 	@$(RM) $(TARGET)
 	@$(RM) $(TEST_TARGET)
 	@$(RM) $(TEST_EXE)
-	@$(RM) gcov*
 	@echo "\033[1;31mAll objects have been removed.\033[0m"
 
 re: clean all
