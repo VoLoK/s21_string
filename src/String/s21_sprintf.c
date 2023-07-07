@@ -10,7 +10,6 @@ int s21_sprintf(char* str, const char* format, ...) {
   int size = (int)s21_strlen(format);
   int i = 0;
   long long int num = -1;
-  int flag_h_work = 1;
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
@@ -27,20 +26,17 @@ int s21_sprintf(char* str, const char* format, ...) {
       }
       if (*format == 'h') {
         format++;
-        num = cast_to_h(list, str, format);
-        //            format--;
+        num = cast_to_h(list, format);
       }
       switch (*format++) {
         case 'c':
           c_specific(list, str, &i);
           break;
         case 'd':
-          //              if (flag_h_work) {
           d_specific(temp, list, p, len, &i, str, num, &size);
-          //              }
           break;
         case 'f':
-          str = (char*)f_specific(list, p, temp, len, &i, str, pers_num, &size);
+          f_specific(list, p, temp, len, &i, str, pers_num, &size);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
@@ -70,7 +66,7 @@ int s21_sprintf(char* str, const char* format, ...) {
 }
 
 void flag_plus(va_list list, char* str, int* i, long long int* num) {
-  *num = va_arg(list, unsigned int);
+  *num = va_arg(list, int);
   if (*num >= 0) {
     s21_memset(&str[*i], '+', 1);
     *i += 1;
@@ -78,7 +74,7 @@ void flag_plus(va_list list, char* str, int* i, long long int* num) {
 }
 
 void flag_space(va_list list, char* str, int* i, long long int* num) {
-  *num = va_arg(list, unsigned int);
+  *num = va_arg(list, int);
   if (*num >= 0) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
@@ -108,7 +104,7 @@ void c_specific(va_list list, char* str, int* i) {
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
                 char* str, long long int num, int* size) {
   if (num != -1) {
-    p = s21_itoa(100, temp, num);
+    p = s21_itoa(100, temp, (int)num);
   } else {
     p = s21_itoa(100, temp, va_arg(list, int));
   }
@@ -284,7 +280,7 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   return q;
 }
 
-long long cast_to_h(va_list list, char* str, const char* format) {
+long long cast_to_h(va_list list, const char* format) {
   long long int num;
   if (*format == 'd' || *format == 'i') {
     num = (short int)va_arg(list, long long int);
@@ -294,16 +290,16 @@ long long cast_to_h(va_list list, char* str, const char* format) {
   return num;
 }
 
-void s21_utoa(unsigned int n, char s[]) {
-  unsigned int sign;
+void s21_utoa(long long int n, char s[]) {
+  long long int sign;
   int i;
 
-  if ((sign = n) < 0) /* record sign */
-    n = -n;           /* make n positive */
+  if ((sign = n) < 0)
+    n = -n;
   i = 0;
-  do {                     /* generate digits in reverse order */
-    s[i++] = n % 10 + '0'; /* get next digit */
-  } while ((n /= 10) > 0); /* delete it */
+  do {
+    s[i++] = n % 10 + '0';
+  } while ((n /= 10) > 0);
   if (sign < 0) s[i++] = '-';
   s[i] = '\0';
   s21_reverse(s);
@@ -327,21 +323,24 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
 
 void percent_specific(void) {}
 
-int main() {
-  char buffer1[100];
-  char buffer2[100];
-  // int str3 = 4.3;
-  //    size_t n = strlen(str3);
-  //    size_t m = s21_strlen(str3);
-  //    printf("%lu %lu \n", n, m);
+//  int main() {
+//    char buffer1[100];
+//    char buffer2[100];
+//    // int str3 = 4.3;
+//    //    size_t n = strlen(str3);
+//    //    size_t m = s21_strlen(str3);
+//    //    printf("%lu %lu \n", n, m);
 
-  //       char s21_buff[100] = "";
-  //       char buff[100] = "";
-  //       s21_sprintf(s21_buff, "% d", 0);
-  //       sprintf(buff, "% d", 0);
-  //       printf("%s \n%s\n", s21_buff, buff);
+//    //       char s21_buff[100] = "";
+//    //       char buff[100] = "";
+//    //       s21_sprintf(s21_buff, "% d", 0);
+//    //       sprintf(buff, "% d", 0);
+//    //       printf("%s \n%s\n", s21_buff, buff);
 
-  //     s21_sprintf(buffer1, "s21   : %ho",);
-  sprintf(buffer2, "origin: %.*f", 2, 1234.76876876);
-  printf("%s \n%s\n", buffer1, buffer2);
-}
+//    //     s21_sprintf(buffer1, "s21   : %ho",);
+//      s21_sprintf(buffer1, "%+d", -250);
+//        sprintf(buffer2, "%+d", -250);
+// //       ck_assert_pstr_eq(s21_buff, buff);
+// //   sprintf(buffer2, "origin: %.*f", 2, 1234.76876876);
+//    printf("%s \n%s\n", buffer1, buffer2);
+//  }

@@ -23,9 +23,9 @@ void o_specific(va_list list, char* str, int* i, long long int num);
 char* s21_reverse(char* str);
 void x_specific(va_list list, char* str, int* i, int spec_x, long long int num);
 void percent_specific(void);
-long long cast_to_h(va_list list, char* str, const char* format);
+long long cast_to_h(va_list list, const char* format);
 void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
                 char* str, int* size, long long int num);
-void s21_utoa(unsigned int n, char s[]);
+void s21_utoa(long long int n, char s[]);
 
 #endif
