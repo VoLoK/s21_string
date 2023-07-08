@@ -316,6 +316,8 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
     s21_utoa(usum, str2);
     s21_size_t len = s21_strlen(str2);
     s21_strncat(str, str2, len);
+    *i += len;
+    *size += len;
   }
 }
 
