@@ -9,7 +9,7 @@ int s21_sprintf(char* str, const char* format, ...) {
   char temp[S21_TEXTMAX];
   int size = (int)s21_strlen(format);
   int i = 0;
-  int num = -1;
+  long long int num = -1;
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
@@ -24,6 +24,10 @@ int s21_sprintf(char* str, const char* format, ...) {
         format++;
         pers_num = get_num((char**)&format);
       }
+      if (*format == 'h') {
+        format++;
+        num = cast_to_h(list, format);
+      }
       switch (*format++) {
         case 'c':
           c_specific(list, str, &i);
@@ -32,22 +36,22 @@ int s21_sprintf(char* str, const char* format, ...) {
           d_specific(temp, list, p, len, &i, str, num, &size);
           break;
         case 'f':
-          str = (char*)f_specific(list, p, temp, len, &i, str, pers_num, &size);
+          f_specific(list, p, temp, len, &i, str, pers_num, &size);
           break;
         case 's':
           s_specific(list, p, len, &i, str);
           break;
         case 'o':
-          o_specific(list, str, &i);
+          o_specific(list, str, &i, num);
           break;
         case 'x':
-          x_specific(list, str, &i, 1);
+          x_specific(list, str, &i, 1, num);
           break;
         case 'X':
-          x_specific(list, str, &i, 0);
+          x_specific(list, str, &i, 0, num);
           break;
         case 'u':
-          u_specific();
+          u_specific(temp, list, p, len, &i, str, &size, num);
           break;
         case '%':
           percent_specific();
@@ -61,16 +65,16 @@ int s21_sprintf(char* str, const char* format, ...) {
   return res;
 }
 
-void flag_plus(va_list list, char* str, int* i, int* num) {
-  *num = va_arg(list, unsigned int);
+void flag_plus(va_list list, char* str, int* i, long long int* num) {
+  *num = va_arg(list, int);
   if (*num >= 0) {
     s21_memset(&str[*i], '+', 1);
     *i += 1;
   }
 }
 
-void flag_space(va_list list, char* str, int* i, int* num) {
-  *num = va_arg(list, unsigned int);
+void flag_space(va_list list, char* str, int* i, long long int* num) {
+  *num = va_arg(list, int);
   if (*num >= 0) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
@@ -98,11 +102,11 @@ void c_specific(va_list list, char* str, int* i) {
 }
 
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
-                char* str, int num, int* size) {
+                char* str, long long int num, int* size) {
   if (num != -1) {
-    p = s21_itoa(100, temp, num);
+    p = s21_itoa(S21_TEXTMAX, temp, (int)num);
   } else {
-    p = s21_itoa(100, temp, va_arg(list, int));
+    p = s21_itoa(S21_TEXTMAX, temp, va_arg(list, int));
   }
   len = s21_strlen(p);
   s21_strncat(str, p, len);
@@ -110,15 +114,14 @@ void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
   *size += len;
 }
 
-char* f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
-                 char* str, int pers_num, int* size) {
+void f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
+                char* str, int pers_num, int* size) {
   float value = (float)va_arg(list, double);
-  p = s21_ftoa(temp, sizeof(temp), value, pers_num);
+  p = s21_ftoa(temp, S21_TEXTMAX, value, pers_num);
   len = s21_strlen(p);
   s21_strncat(&str[*i], p, s21_strlen(p));
   *i += len;
   *size += len;
-  return str;
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
@@ -129,8 +132,10 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
   *i += (len);
 }
 
-void o_specific(va_list list, char* str, int* i) {
-  int num = va_arg(list, int);
+void o_specific(va_list list, char* str, int* i, long long int num) {
+  if (num == -1) {
+    num = va_arg(list, int);
+  }
   if (num == 0) {
     s21_memset(&str[*i], '0', 1);
     *i += 1;
@@ -151,8 +156,11 @@ void o_specific(va_list list, char* str, int* i) {
   }
 }
 
-void x_specific(va_list list, char* str, int* i, int spec_x) {
-  int num = va_arg(list, int);
+void x_specific(va_list list, char* str, int* i, int spec_x,
+                long long int num) {
+  if (num == -1) {
+    num = va_arg(list, int);
+  }
   if (num == 0) {
     s21_memset(&str[*i], '0', 1);
     *i += 1;
@@ -271,25 +279,46 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   return q;
 }
 
-void u_specific(void) {}
+long long cast_to_h(va_list list, const char* format) {
+  long long int num;
+  if (*format == 'd' || *format == 'i') {
+    num = (short int)va_arg(list, long long int);
+  } else {
+    num = (unsigned short)va_arg(list, long long int);
+  }
+  return num;
+}
+
+void s21_utoa(long long int n, char s[]) {
+  long long int sign;
+  int i;
+
+  if ((sign = n) < 0) n = -n;
+  i = 0;
+  do {
+    s[i++] = n % 10 + '0';
+  } while ((n /= 10) > 0);
+  if (sign < 0) s[i++] = '-';
+  s[i] = '\0';
+  s21_reverse(s);
+}
+
+void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
+                char* str, int* size, long long num) {
+  if (num == -1) {
+    num = va_arg(list, unsigned int);
+  }
+  if ((num > 0) && num <= INT_MAX) {
+    d_specific(temp, list, p, len, i, str, num, size);
+  } else {
+    unsigned int usum = UINT_MAX - atoi(str);
+    char str2[1000];
+    s21_utoa(usum, str2);
+    s21_size_t len = s21_strlen(str2);
+    s21_strncat(str, str2, len);
+    *i += len;
+    *size += len;
+  }
+}
 
 void percent_specific(void) {}
-
-//   int main () {
-//     char buffer1[100];
-//     char buffer2[100];
-//     //int str3 = 4.3;
-//   //    size_t n = strlen(str3);
-//   //    size_t m = s21_strlen(str3);
-//   //    printf("%lu %lu \n", n, m);
-//
-////       char s21_buff[100] = "";
-////       char buff[100] = "";
-////       s21_sprintf(s21_buff, "% d", 0);
-////       sprintf(buff, "% d", 0);
-////       printf("%s \n%s\n", s21_buff, buff);
-//
-//     s21_sprintf(buffer1, "s21   : % d", 0);
-//     sprintf(buffer2, "origin: % d", 0);
-//     printf("%s \n%s\n", buffer1, buffer2);
-//   }

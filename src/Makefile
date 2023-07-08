@@ -69,10 +69,8 @@ clang-fix:
 	@$(RM) .clang-format
 
 clean:
-	@$(RM) $(OBJ)
-	@$(RM) -d $(OBJ_DIR)
-	@$(RM) $(TEST_OBJ)
-	@$(RM) -d $(TEST_OBJ_DIR)
+	@$(RM) -rd $(OBJ_DIR)
+	@$(RM) -rd $(TEST_OBJ_DIR)
 	@$(RM) $(TARGET)
 	@$(RM) $(TEST_TARGET)
 	@$(RM) $(TEST_EXE)

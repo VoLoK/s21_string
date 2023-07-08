@@ -1,5 +1,6 @@
-#include "s21_string.h"
 #include <stdlib.h>
+
+#include "s21_string.h"
 
 void *s21_to_upper(const char *str) {
   if (!str || *str == '\0') {

@@ -375,6 +375,46 @@ START_TEST(o_big_number) {
 }
 END_TEST
 
+START_TEST(u_uint_max) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  unsigned int number = UINT_MAX;
+  s21_sprintf(s21_buff, "%u", number);
+  sprintf(buff, "%u", number);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(u_int_max) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  int number = INT_MAX;
+  s21_sprintf(s21_buff, "%u", number);
+  sprintf(buff, "%u", number);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+// START_TEST(u_negative_number) {
+//   char s21_buff[100] = "";
+//   char buff[100] = "";
+//   int number = -100;
+//   s21_sprintf(s21_buff, "%u", number);
+//   sprintf(buff, "%u", number);
+//   ck_assert_pstr_eq(s21_buff, buff);
+// }
+// END_TEST
+
+// START_TEST(u_int_max_plus_number) {
+//   char s21_buff[100] = "";
+//   char buff[100] = "";
+//   unsigned int number = (unsigned int)INT_MAX + 100;
+//   s21_sprintf(s21_buff, "%u", number);
+//   sprintf(buff, "%u", number);
+//   ck_assert_pstr_eq(s21_buff, buff);
+// }
+// END_TEST
+
 Suite* suite_sprintf() {
   Suite* suite = suite_create("sprintf_suite");
   TCase* tcase_core = tcase_create("sprintf_tc");
@@ -415,6 +455,8 @@ Suite* suite_sprintf() {
   tcase_add_test(tcase_core, o_before_eight);
   tcase_add_test(tcase_core, o_zero);
   tcase_add_test(tcase_core, o_big_number);
+  tcase_add_test(tcase_core, u_uint_max);
+  tcase_add_test(tcase_core, u_int_max);
 
   suite_add_tcase(suite, tcase_core);
   return suite;
