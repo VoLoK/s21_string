@@ -104,9 +104,9 @@ void c_specific(va_list list, char* str, int* i) {
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
                 char* str, long long int num, int* size) {
   if (num != -1) {
-    p = s21_itoa(100, temp, (int)num);
+    p = s21_itoa(S21_TEXTMAX, temp, (int)num);
   } else {
-    p = s21_itoa(100, temp, va_arg(list, int));
+    p = s21_itoa(S21_TEXTMAX, temp, va_arg(list, int));
   }
   len = s21_strlen(p);
   s21_strncat(str, p, len);
@@ -114,15 +114,14 @@ void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
   *size += len;
 }
 
-char* f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
-                 char* str, int pers_num, int* size) {
+void f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
+                char* str, int pers_num, int* size) {
   float value = (float)va_arg(list, double);
-  p = s21_ftoa(temp, sizeof(temp), value, pers_num);
+  p = s21_ftoa(temp, S21_TEXTMAX, value, pers_num);
   len = s21_strlen(p);
   s21_strncat(&str[*i], p, s21_strlen(p));
   *i += len;
   *size += len;
-  return str;
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str) {
@@ -321,25 +320,3 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
 }
 
 void percent_specific(void) {}
-
-//  int main() {
-//    char buffer1[100];
-//    char buffer2[100];
-//    // int str3 = 4.3;
-//    //    size_t n = strlen(str3);
-//    //    size_t m = s21_strlen(str3);
-//    //    printf("%lu %lu \n", n, m);
-
-//    //       char s21_buff[100] = "";
-//    //       char buff[100] = "";
-//    //       s21_sprintf(s21_buff, "% d", 0);
-//    //       sprintf(buff, "% d", 0);
-//    //       printf("%s \n%s\n", s21_buff, buff);
-
-//    //     s21_sprintf(buffer1, "s21   : %ho",);
-//      s21_sprintf(buffer1, "%+d", -250);
-//        sprintf(buffer2, "%+d", -250);
-// //       ck_assert_pstr_eq(s21_buff, buff);
-// //   sprintf(buffer2, "origin: %.*f", 2, 1234.76876876);
-//    printf("%s \n%s\n", buffer1, buffer2);
-//  }

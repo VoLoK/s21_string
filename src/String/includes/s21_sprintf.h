@@ -12,7 +12,7 @@ char* s21_convert(char* buff, int size, unsigned int num, int base);
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
                 char* str, long long int num, int* size);
 void c_specific(va_list list, char* str, int* i);
-char* f_specific(va_list, char*, char*, s21_size_t, int*, char*, int, int*);
+void f_specific(va_list, char*, char*, s21_size_t, int*, char*, int, int*);
 void s_specific(va_list, char*, unsigned char, int*, char*);
 void flag_plus(va_list list, char* str, int* i, long long int* num);
 void flag_space(va_list list, char* str, int* i, long long int* num);
