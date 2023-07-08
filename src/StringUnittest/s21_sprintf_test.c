@@ -415,6 +415,16 @@ END_TEST
 // }
 // END_TEST
 
+// START_TEST(u_with_zero) {
+//   char s21_buff[100] = "";
+//   char buff[100] = "";
+//   int number = 0;
+//   s21_sprintf(s21_buff, "%u", number);
+//   sprintf(buff, "%u", number);
+//   ck_assert_pstr_eq(s21_buff, buff);
+// }
+// END_TEST
+
 Suite* suite_sprintf() {
   Suite* suite = suite_create("sprintf_suite");
   TCase* tcase_core = tcase_create("sprintf_tc");
