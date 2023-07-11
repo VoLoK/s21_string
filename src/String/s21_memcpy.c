@@ -5,5 +5,5 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
   char *destination = (char *)dest;
   while (n-- > 0)
     *destination++ = *source++;
-  return destination;
+  return dest;
 }
