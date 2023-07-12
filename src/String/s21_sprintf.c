@@ -1,7 +1,4 @@
-#include "includes/s21_sprintf.h"
-
-#include <stdarg.h>
-#include <stdio.h>
+#include "s21_sprintf.h"
 
 int s21_sprintf(char* str, const char* format, ...) {
   char* p = "";
@@ -41,7 +38,7 @@ int s21_sprintf(char* str, const char* format, ...) {
       }
       switch (*format++) {
         case 'c':
-          c_specific(list, str, &i, width);
+          c_specific(list, str, &i, width, &size);
           break;
         case 'd':
           d_specific(temp, list, p, len, &i, str, num, &size, width);
@@ -50,22 +47,22 @@ int s21_sprintf(char* str, const char* format, ...) {
           f_specific(list, p, temp, len, &i, str, pers_num, &size, width);
           break;
         case 's':
-          s_specific(list, p, len, &i, str, width);
+          s_specific(list, p, len, &i, str, width, &size);
           break;
         case 'o':
           o_specific(list, str, &i, num, width, &size);
           break;
         case 'x':
-          x_specific(list, str, &i, 1, num, width);
+          x_specific(list, str, &i, 1, num, width, &size);
           break;
         case 'X':
-          x_specific(list, str, &i, 0, num, width);
+          x_specific(list, str, &i, 0, num, width, &size);
           break;
         case 'u':
           u_specific(temp, list, p, len, &i, str, &size, num, width);
           break;
         case '%':
-          percent_specific(list, str, &i);
+          percent_specific(list, str, &i, &size);
       }
     } else {
       str[i++] = *(format - 1);
@@ -106,7 +103,7 @@ int get_num(char** str) {
   return atoi(temp);
 }
 
-void c_specific(va_list list, char* str, int* i, s21_size_t width) {
+void c_specific(va_list list, char* str, int* i, s21_size_t width, int* size) {
   char c = va_arg(list, int);
   if (width > 1) {
     char padding = ' ';
@@ -114,11 +111,12 @@ void c_specific(va_list list, char* str, int* i, s21_size_t width) {
     for (int j = 0; j < num_padding; j++) {
       s21_strncat(str, &padding, 1);
       (*i)++;
+      (*size)++;
     }
   }
   str[*i] = c;
   *i += 1;
-  str[*i] = '\0';
+  *size += 1;
 }
 
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
@@ -163,7 +161,7 @@ void f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str,
-                s21_size_t width) {
+                s21_size_t width, int* size) {
   p = va_arg(list, char*);
   len = (unsigned char)s21_strlen(p);
   if (width > len) {
@@ -172,14 +170,17 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str,
     for (int j = 0; j < num_padding; j++) {
       s21_strncat(str, &padding, 1);
       (*i)++;
+      (*size)++;
     }
   }
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, len);
-  *i += (len);
+  *i += len;
+  *size += len;
 }
 
-void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t width) {
+void o_specific(va_list list, char* str, int* i, long long int num,
+                s21_size_t width, int* size) {
   if (num == -1) {
     num = va_arg(list, int);
   }
@@ -224,7 +225,7 @@ void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t w
 }
 
 void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
-                s21_size_t width) {
+                s21_size_t width, int* size) {
   if (num == -1) {
     num = va_arg(list, int);
   }
@@ -235,10 +236,12 @@ void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
         (*i)++;
+        (*size)++;
       }
     }
     s21_memset(&str[*i], '0', 1);
     *i += 1;
+    *size += 1;
   } else {
     char str2[100] = "";
     int rez = 0;
@@ -258,10 +261,12 @@ void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
         (*i)++;
+        (*size)++;
       }
     }
     s21_memcpy(&str[*i], str2, len_str2);
     *i += len_str2;
+    *size += len_str2;
   }
 }
 
@@ -413,7 +418,8 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
       int num_padding = width - len_str2;
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
-        (*i)++;
+        *i++;
+        *size++;
       }
     }
     s21_memcpy(&str[*i], str2, len_str2);
@@ -422,7 +428,8 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
   }
 }
 
-void percent_specific(va_list list, char* str, int* i) {
-    s21_memset(&str[*i], '%', 1);
-    *i += 1;
+void percent_specific(va_list list, char* str, int* i, int* size) {
+  s21_memset(&str[*i], '%', 1);
+  *i += 1;
+  *size += 1;
 }
