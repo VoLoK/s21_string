@@ -62,7 +62,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           u_specific(temp, list, p, len, &i, str, &size, num, width);
           break;
         case '%':
-          percent_specific(list, str, &i, &num);
+          percent_specific(list, str, &i);
       }
     } else {
       str[i++] = *(format - 1);
@@ -415,10 +415,7 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
   }
 }
 
-void percent_specific(va_list list, char* str, int* i, long long int* num) {
-  *num = va_arg(list, int);
-  if (*num >= 0) {
+void percent_specific(va_list list, char* str, int* i) {
     s21_memset(&str[*i], '%', 1);
     *i += 1;
-  }
 }
