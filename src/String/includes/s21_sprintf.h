@@ -19,7 +19,8 @@ void flag_space(va_list list, char* str, int* i, long long int* num);
 char* s21_ftoa(char* buff, int size, float val, int digits);
 int get_num(char** str);
 int atoi(const char* str);
-void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t width);
+void o_specific(va_list list, char* str, int* i, long long int num,
+                s21_size_t width, int* size);
 char* s21_reverse(char* str);
 void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
                 s21_size_t width);

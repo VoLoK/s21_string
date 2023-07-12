@@ -1,4 +1,7 @@
-#include "s21_sprintf.h"
+#include "includes/s21_sprintf.h"
+
+#include <stdarg.h>
+#include <stdio.h>
 
 int s21_sprintf(char* str, const char* format, ...) {
   char* p = "";
@@ -50,7 +53,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           s_specific(list, p, len, &i, str, width);
           break;
         case 'o':
-          o_specific(list, str, &i, num, width);
+          o_specific(list, str, &i, num, width, &size);
           break;
         case 'x':
           x_specific(list, str, &i, 1, num, width);
@@ -176,7 +179,8 @@ void s_specific(va_list list, char* p, unsigned char len, int* i, char* str,
   *i += (len);
 }
 
-void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t width) {
+void o_specific(va_list list, char* str, int* i, long long int num,
+                s21_size_t width, int* size) {
   if (num == -1) {
     num = va_arg(list, int);
   }
@@ -187,10 +191,12 @@ void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t w
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
         (*i)++;
+        (*size)++;
       }
     }
     s21_memset(&str[*i], '0', 1);
     *i += 1;
+    *size += 1;
   } else {
     char str2[100] = "";
     int rez = 0;
@@ -209,10 +215,12 @@ void o_specific(va_list list, char* str, int* i, long long int num, s21_size_t w
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
         (*i)++;
+        (*size)++;
       }
     }
     s21_memcpy(&str[*i], str2, len_str2);
     *i += len_str2;
+    *size += len_str2;
   }
 }
 
@@ -416,17 +424,14 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
 }
 
 void percent_specific(va_list list, char* str, int* i, long long int* num) {
-  *num = va_arg(list, int);
-  if (*num >= 0) {
-    s21_memset(&str[*i], '%', 1);
-    *i += 1;
-  }
+  s21_memset(&str[*i], '%', 1);
+  *i += 1;
 }
 
-// int main() {
-//   char buffer1[100];
-//   char buffer2[100];
-//   s21_sprintf(buffer1, "This is %lu", 1534677535);
-//   sprintf(buffer2, "This is %lu", 1534677535);
-//   printf("%s\n%s\n", buffer1, buffer2);
-// }
+int main() {
+  char buffer1[100];
+  char buffer2[100];
+  s21_sprintf(buffer1, "This is %o specificalasdasfasfsadgsg", 1534677535);
+  sprintf(buffer2, "This is %o specificalasdasfasfsadgsg", 1534677535);
+  printf("%s\n%s\n", buffer1, buffer2);
+}
