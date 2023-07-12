@@ -62,7 +62,7 @@ int s21_sprintf(char* str, const char* format, ...) {
           u_specific(temp, list, p, len, &i, str, &size, num, width);
           break;
         case '%':
-          percent_specific(list, str, &i, &size);
+          percent_specific(str, &i, &size);
       }
     } else {
       str[i++] = *(format - 1);
@@ -418,8 +418,8 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
       int num_padding = width - len_str2;
       for (int j = 0; j < num_padding; j++) {
         s21_strncat(str, &padding, 1);
-        *i++;
-        *size++;
+        *i += 1;
+        *size += 1;
       }
     }
     s21_memcpy(&str[*i], str2, len_str2);
@@ -428,7 +428,7 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
   }
 }
 
-void percent_specific(va_list list, char* str, int* i, int* size) {
+void percent_specific(char* str, int* i, int* size) {
   s21_memset(&str[*i], '%', 1);
   *i += 1;
   *size += 1;

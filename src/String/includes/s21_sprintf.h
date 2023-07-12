@@ -25,7 +25,7 @@ void o_specific(va_list list, char* str, int* i, long long int num,
 char* s21_reverse(char* str);
 void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
                 s21_size_t width, int* size);
-void percent_specific(va_list list, char* str, int* i, int* size);
+void percent_specific(char* str, int* i, int* size);
 long long cast_to_h(va_list list, const char* format);
 void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
                 char* str, int* size, long long int num, s21_size_t width);
