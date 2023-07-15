@@ -425,6 +425,127 @@ END_TEST
 // }
 // END_TEST
 
+START_TEST(d_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%5d", 1568);
+  sprintf(buff, "%5d", 1568);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(f_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%4f", 15.15);
+  sprintf(buff, "%4f", 15.15);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(c_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%10c", 'z');
+  sprintf(buff, "%10c", 'z');
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(s_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%3s", "Hello, world!");
+  sprintf(buff, "%3s", "Hello, world!");
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(o_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%4o", 256);
+  sprintf(buff, "%4o", 256);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(x_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%15x", 15);
+  sprintf(buff, "%15x", 15);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(u_width) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%8u", 15678940);
+  sprintf(buff, "%8u", 15678940);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(percent_one) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%% %d", 1);
+  sprintf(buff, "%% %d", 1);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(percent_some) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  s21_sprintf(s21_buff, "%%%%%% %f", 1.0);
+  sprintf(buff, "%%%%%% %f", 1.0);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(l_d) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  long int d = 1234567890;
+  s21_sprintf(s21_buff, "%ld", d);
+  sprintf(buff, "%ld", d);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(l_o) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  long int o = 84518;
+  s21_sprintf(s21_buff, "%lo", o);
+  sprintf(buff, "%lo", o);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(l_u) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  unsigned long int u = 1234567890;
+  s21_sprintf(s21_buff, "%lu", u);
+  sprintf(buff, "%lu", u);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(l_x) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  long int x = 15;
+  s21_sprintf(s21_buff, "%lx", x);
+  sprintf(buff, "%lx", x);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 Suite* suite_sprintf() {
   Suite* suite = suite_create("sprintf_suite");
   TCase* tcase_core = tcase_create("sprintf_tc");
@@ -467,6 +588,19 @@ Suite* suite_sprintf() {
   tcase_add_test(tcase_core, o_big_number);
   tcase_add_test(tcase_core, u_uint_max);
   tcase_add_test(tcase_core, u_int_max);
+  tcase_add_test(tcase_core, d_width);
+  tcase_add_test(tcase_core, f_width);
+  tcase_add_test(tcase_core, c_width);
+  tcase_add_test(tcase_core, s_width);
+  tcase_add_test(tcase_core, o_width);
+  tcase_add_test(tcase_core, x_width);
+  tcase_add_test(tcase_core, u_width);
+  tcase_add_test(tcase_core, percent_one);
+  tcase_add_test(tcase_core, percent_some);
+  tcase_add_test(tcase_core, l_d);
+  tcase_add_test(tcase_core, l_o);
+  tcase_add_test(tcase_core, l_u);
+  tcase_add_test(tcase_core, l_x);
 
   suite_add_tcase(suite, tcase_core);
   return suite;
