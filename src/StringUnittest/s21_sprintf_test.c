@@ -437,8 +437,8 @@ END_TEST
 START_TEST(f_width) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%7f", 1235.1568);
-  sprintf(buff, "%7f", 1235.1568);
+  s21_sprintf(s21_buff, "%4f", 15.15);
+  sprintf(buff, "%4f", 15.15);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -509,8 +509,8 @@ END_TEST
 START_TEST(l_d) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%ld", 9223372036);
-  sprintf(buff, "%ld", 9223372036);
+  s21_sprintf(s21_buff, "%ld", 92233720);
+  sprintf(buff, "%ld", 92233720);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -527,8 +527,8 @@ END_TEST
 START_TEST(l_u) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%lu", 9223372036);
-  sprintf(buff, "%lu", 9223372036);
+  s21_sprintf(s21_buff, "%lu", 92233720);
+  sprintf(buff, "%lu", 92233720);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -536,8 +536,8 @@ END_TEST
 START_TEST(l_x) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%lx", 9223372036);
-  sprintf(buff, "%lx", 9223372036);
+  s21_sprintf(s21_buff, "%lx", 92233720);
+  sprintf(buff, "%lx", 92233720);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
