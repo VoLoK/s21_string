@@ -15,8 +15,9 @@ int s21_sprintf(char* str, const char* format, ...) {
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
-      if (*format++ == '-') {
+      if (*format == '-') {
         minus_flag = 1;
+        format++;
       }
       s21_size_t width = 0;
       if (*format >= '0' && *format <= '9') {
