@@ -10,18 +10,24 @@ int s21_sprintf(char* str, const char* format, ...) {
   int size = (int)s21_strlen(format);
   int i = 0;
   long long int num = -1;
+  int minus_flag = 0;
+  int num_flag = 0;
   s21_size_t len = 0;
   while (*format != 0 && i < size) {
     if (*format++ == '%') {
+      if (*format == '-') {
+        minus_flag = 1;
+        format++;
+      }
       s21_size_t width = 0;
       if (*format >= '0' && *format <= '9') {
         width = get_num((char**)&format);
       }
       if (*format == '+') {
-        flag_plus(list, str, &i, &num);
+        flag_plus(list, str, &i, &num, &num_flag);
         format++;
       } else if (*format == ' ') {
-        flag_space(list, str, &i, &num);
+        flag_space(list, str, &i, &num, &num_flag);
         format++;
       }
       if (*format == '.') {
@@ -31,6 +37,12 @@ int s21_sprintf(char* str, const char* format, ...) {
       if (*format == 'h') {
         format++;
         num = cast_to_h(list, format);
+        num_flag = 1;
+      }
+      if (*format == 'l') {
+        format++;
+        num = cast_to_l(list, format);
+        num_flag = 1;
       }
       if (*format == 'l') {
         format++;
@@ -38,28 +50,31 @@ int s21_sprintf(char* str, const char* format, ...) {
       }
       switch (*format++) {
         case 'c':
-          c_specific(list, str, &i, width, &size);
+          c_specific(list, str, &i, width, &size, &minus_flag);
           break;
         case 'd':
-          d_specific(temp, list, p, len, &i, str, num, &size, width);
+          d_specific(temp, list, p, len, &i, str, num, &size, width, &num_flag,
+                     &minus_flag);
           break;
         case 'f':
-          f_specific(list, p, temp, len, &i, str, pers_num, &size, width);
+          f_specific(list, p, temp, len, &i, str, pers_num, &size, width,
+                     &minus_flag);
           break;
         case 's':
-          s_specific(list, p, len, &i, str, width, &size);
+          s_specific(list, p, len, &i, str, width, &size, &minus_flag);
           break;
         case 'o':
-          o_specific(list, str, &i, num, width, &size);
+          o_specific(list, str, &i, num, width, &size, &minus_flag);
           break;
         case 'x':
-          x_specific(list, str, &i, 1, num, width, &size);
+          x_specific(list, str, &i, 1, num, width, &size, &minus_flag);
           break;
         case 'X':
-          x_specific(list, str, &i, 0, num, width, &size);
+          x_specific(list, str, &i, 0, num, width, &size, &minus_flag);
           break;
         case 'u':
-          u_specific(temp, list, p, len, &i, str, &size, num, width);
+          u_specific(temp, list, p, len, &i, str, &size, num, width, &num_flag,
+                     &minus_flag);
           break;
         case '%':
           percent_specific(str, &i, &size);
@@ -73,16 +88,20 @@ int s21_sprintf(char* str, const char* format, ...) {
   return res;
 }
 
-void flag_plus(va_list list, char* str, int* i, long long int* num) {
+void flag_plus(va_list list, char* str, int* i, long long int* num,
+               int* num_flag) {
   *num = va_arg(list, int);
+  *num_flag = 1;
   if (*num >= 0) {
     s21_memset(&str[*i], '+', 1);
     *i += 1;
   }
 }
 
-void flag_space(va_list list, char* str, int* i, long long int* num) {
+void flag_space(va_list list, char* str, int* i, long long int* num,
+                int* num_flag) {
   *num = va_arg(list, int);
+  *num_flag = 1;
   if (*num >= 0) {
     s21_memset(&str[*i], ' ', 1);
     *i += 1;
@@ -103,96 +122,103 @@ int get_num(char** str) {
   return atoi(temp);
 }
 
-void c_specific(va_list list, char* str, int* i, s21_size_t width, int* size) {
+
+void fill_width_padding(s21_size_t num_padding, char* str, int* i, int* size,
+                        int* minus_flag) {
+  char padding = ' ';
+  for (int j = 0; j < (int)num_padding; j++) {
+    s21_strncat(str, &padding, 1);
+    (*i)++;
+    (*size)++;
+  }
+  *minus_flag = 0;
+}
+
+void c_specific(va_list list, char* str, int* i, s21_size_t width, int* size,
+                int* minus_flag) {
   char c = va_arg(list, int);
-  if (width > 1) {
-    char padding = ' ';
-    int num_padding = width - 1;
-    for (int j = 0; j < num_padding; j++) {
-      s21_strncat(str, &padding, 1);
-      (*i)++;
-      (*size)++;
-    }
+  if (width > 1 && !*minus_flag) {
+    s21_size_t num_padding = width - 1;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
   }
   str[*i] = c;
   *i += 1;
   *size += 1;
+  if (*minus_flag && width > 1) {
+    s21_size_t num_padding = width - 1;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
+  }
 }
 
 void d_specific(char* temp, va_list list, char* p, s21_size_t len, int* i,
-                char* str, long long int num, int* size, s21_size_t width) {
-  if (num != -1) {
+                char* str, long long int num, int* size, s21_size_t width,
+                int* num_flag, int* minus_flag) {
+  if (*num_flag) {
     p = s21_itoa(S21_TEXTMAX, temp, (int)num);
+    *num_flag = 0;
   } else {
     p = s21_itoa(S21_TEXTMAX, temp, va_arg(list, int));
   }
   len = s21_strlen(p);
-  if (width > len) {
-    char padding = ' ';
-    int num_padding = width - len;
-    for (int j = 0; j < num_padding; j++) {
-      s21_strncat(str, &padding, 1);
-      (*i)++;
-      (*size)++;
-    }
+  if (width > len && !*minus_flag) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
   }
   s21_strncat(str, p, len);
   *i += len;
   *size += len;
+  if (*minus_flag && width > len) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
+  }
 }
 
 void f_specific(va_list list, char* p, char* temp, s21_size_t len, int* i,
-                char* str, int pers_num, int* size, s21_size_t width) {
+                char* str, int pers_num, int* size, s21_size_t width,
+                int* minus_flag) {
   float value = (float)va_arg(list, double);
   p = s21_ftoa(temp, S21_TEXTMAX, value, pers_num);
   len = s21_strlen(p);
-  if (width > len) {
-    char padding = ' ';
-    int num_padding = width - len;
-    for (int j = 0; j < num_padding; j++) {
-      s21_strncat(str, &padding, 1);
-      (*i)++;
-      (*size)++;
-    }
+  if (width > len && !*minus_flag) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
   }
   s21_strncat(&str[*i], p, len);
   *i += len;
   *size += len;
+  if (*minus_flag && width > len) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
+  }
 }
 
 void s_specific(va_list list, char* p, unsigned char len, int* i, char* str,
-                s21_size_t width, int* size) {
+                s21_size_t width, int* size, int* minus_flag) {
   p = va_arg(list, char*);
   len = (unsigned char)s21_strlen(p);
-  if (width > len) {
-    char padding = ' ';
-    int num_padding = width - len;
-    for (int j = 0; j < num_padding; j++) {
-      s21_strncat(str, &padding, 1);
-      (*i)++;
-      (*size)++;
-    }
+  if (width > len && !*minus_flag) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
   }
   s21_memset(&str[*i], ' ', 0);
   s21_strncat(&str[*i], p, len);
   *i += len;
   *size += len;
+  if (*minus_flag && width > len) {
+    s21_size_t num_padding = width - len;
+    fill_width_padding(num_padding, str, i, size, minus_flag);
+  }
 }
 
 void o_specific(va_list list, char* str, int* i, long long int num,
-                s21_size_t width, int* size) {
+                s21_size_t width, int* size, int* minus_flag) {
   if (num == -1) {
     num = va_arg(list, int);
   }
   if (num == 0) {
-    if (width > 0) {
-      char padding = ' ';
-      int num_padding = width - 1;
-      for (int j = 0; j < num_padding; j++) {
-        s21_strncat(str, &padding, 1);
-        (*i)++;
-        (*size)++;
-      }
+    if (width > 0 && !*minus_flag) {
+      int num_padding = (int)width - 1;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
     }
     s21_memset(&str[*i], '0', 1);
     *i += 1;
@@ -209,35 +235,30 @@ void o_specific(va_list list, char* str, int* i, long long int num,
     }
     s21_reverse(str2);
     s21_size_t len_str2 = s21_strlen(str2);
-    if (width > len_str2) {
-      char padding = ' ';
-      int num_padding = width - len_str2;
-      for (int j = 0; j < num_padding; j++) {
-        s21_strncat(str, &padding, 1);
-        (*i)++;
-        (*size)++;
-      }
+    if (width > len_str2 && !*minus_flag) {
+      int num_padding = (int)(width - len_str2);
+      fill_width_padding(num_padding, str, i, size, minus_flag);
     }
     s21_memcpy(&str[*i], str2, len_str2);
     *i += len_str2;
     *size += len_str2;
+    if (*minus_flag && width > len_str2) {
+      s21_size_t num_padding = width - len_str2;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
+    }
   }
 }
 
 void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
-                s21_size_t width, int* size) {
+                s21_size_t width, int* size, int* minus_flag) {
   if (num == -1) {
     num = va_arg(list, int);
   }
   if (num == 0) {
-    if (width > 0) {
-      char padding = ' ';
-      int num_padding = width - 1;
-      for (int j = 0; j < num_padding; j++) {
-        s21_strncat(str, &padding, 1);
-        (*i)++;
-        (*size)++;
-      }
+
+    if (width > 0 && !*minus_flag) {
+      int num_padding = (int)width - 1;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
     }
     s21_memset(&str[*i], '0', 1);
     *i += 1;
@@ -255,18 +276,17 @@ void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
     }
     s21_reverse(str2);
     s21_size_t len_str2 = s21_strlen(str2);
-    if (width > len_str2) {
-      char padding = ' ';
-      int num_padding = width - len_str2;
-      for (int j = 0; j < num_padding; j++) {
-        s21_strncat(str, &padding, 1);
-        (*i)++;
-        (*size)++;
-      }
+    if (width > len_str2 && !*minus_flag) {
+      s21_size_t num_padding = width - len_str2;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
     }
     s21_memcpy(&str[*i], str2, len_str2);
     *i += len_str2;
     *size += len_str2;
+    if (*minus_flag && width > len_str2) {
+      s21_size_t num_padding = width - len_str2;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
+    }
   }
 }
 
@@ -402,29 +422,31 @@ void s21_utoa(long long int n, char s[]) {
 }
 
 void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
-                char* str, int* size, long long num, s21_size_t width) {
+                char* str, int* size, long long num, s21_size_t width,
+                int* num_flag, int* minus_flag) {
+  *num_flag = 1;
   if (num == -1) {
     num = va_arg(list, unsigned int);
   }
-  if ((num > 0) && num <= INT_MAX) {
-    d_specific(temp, list, p, len, i, str, num, size, width);
+  if ((num >= 0) && num <= INT_MAX) {
+    d_specific(temp, list, p, len, i, str, num, size, width, num_flag,
+               minus_flag);
   } else {
     unsigned int usum = UINT_MAX - atoi(str);
     char str2[1000];
     s21_utoa(usum, str2);
     s21_size_t len_str2 = s21_strlen(str2);
-    if (width > len_str2) {
-      char padding = ' ';
-      int num_padding = width - len_str2;
-      for (int j = 0; j < num_padding; j++) {
-        s21_strncat(str, &padding, 1);
-        *i += 1;
-        *size += 1;
-      }
+    if (width > len_str2 && !*minus_flag) {
+      s21_size_t num_padding = width - len_str2;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
     }
     s21_memcpy(&str[*i], str2, len_str2);
     *i += len_str2;
     *size += len_str2;
+    if (*minus_flag && width > len) {
+      s21_size_t num_padding = width - len;
+      fill_width_padding(num_padding, str, i, size, minus_flag);
+    }
   }
 }
 
