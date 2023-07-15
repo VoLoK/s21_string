@@ -1,8 +1,8 @@
 #ifndef SRC_S21_SPRINTF_H_
 #define SRC_S21_SPRINTF_H_
 
-#include <stdarg.h>
 #include <limits.h>
+#include <stdarg.h>
 
 #include "s21_string.h"
 
@@ -28,4 +28,3 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
 void s21_utoa(long long int n, char s[]);
 
 #endif
-
