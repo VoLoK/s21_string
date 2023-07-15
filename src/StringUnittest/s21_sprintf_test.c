@@ -509,8 +509,9 @@ END_TEST
 START_TEST(l_d) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%ld", 92233720);
-  sprintf(buff, "%ld", 92233720);
+  long int d = 9223372036854775807;
+  s21_sprintf(s21_buff, "%ld", d);
+  sprintf(buff, "%ld", d);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -518,8 +519,9 @@ END_TEST
 START_TEST(l_o) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%lo", 9223372036);
-  sprintf(buff, "%lo", 9223372036);
+  long int o = 84518;
+  s21_sprintf(s21_buff, "%lo", o);
+  sprintf(buff, "%lo", o);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -536,8 +538,9 @@ END_TEST
 START_TEST(l_x) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%lx", 92233720);
-  sprintf(buff, "%lx", 92233720);
+  long int x = 256;
+  s21_sprintf(s21_buff, "%lx", x);
+  sprintf(buff, "%lx", x);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
