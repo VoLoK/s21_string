@@ -43,6 +43,10 @@ int s21_sprintf(char* str, const char* format, ...) {
         num = cast_to_l(list, format);
         num_flag = 1;
       }
+      if (*format == 'l') {
+        format++;
+        num = cast_to_l(list, format);
+      }
       switch (*format++) {
         case 'c':
           c_specific(list, str, &i, width, &size, &minus_flag);
@@ -116,6 +120,7 @@ int get_num(char** str) {
   *copy = 0;
   return atoi(temp);
 }
+
 
 void fill_width_padding(s21_size_t num_padding, char* str, int* i, int* size,
                         int* minus_flag) {
@@ -249,6 +254,7 @@ void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
     num = va_arg(list, int);
   }
   if (num == 0) {
+
     if (width > 0 && !*minus_flag) {
       int num_padding = (int)width - 1;
       fill_width_padding(num_padding, str, i, size, minus_flag);
@@ -447,17 +453,4 @@ void percent_specific(char* str, int* i, int* size) {
   s21_memset(&str[*i], '%', 1);
   *i += 1;
   *size += 1;
-}
-
-#include <stdio.h>
-
-#include "s21_sprintf.h"
-#include "s21_string.h"
-int main() {
-  char buff[100] = "";
-  char s21_buff[100] = "";
-  s21_sprintf(s21_buff, "%-10f % 10d", 2.5, 10);
-  sprintf(buff, "%-10f % 10d", 2.5, 10);
-  printf("s21 = [%s]\noriginal = [%s]\n", s21_buff, buff);
-  return 0;
 }
