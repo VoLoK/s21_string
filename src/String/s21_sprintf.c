@@ -125,7 +125,7 @@ int get_num(char** str) {
 void fill_width_padding(s21_size_t num_padding, char* str, int* i, int* size,
                         int* minus_flag) {
   char padding = ' ';
-  for (int j = 0; j < num_padding; j++) {
+  for (int j = 0; j < (int)num_padding; j++) {
     s21_strncat(str, &padding, 1);
     (*i)++;
     (*size)++;
