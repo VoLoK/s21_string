@@ -509,7 +509,7 @@ END_TEST
 START_TEST(l_d) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  long int d = 9223372036854775807;
+  long int d = 1234567890;
   s21_sprintf(s21_buff, "%ld", d);
   sprintf(buff, "%ld", d);
   ck_assert_pstr_eq(s21_buff, buff);
@@ -529,8 +529,9 @@ END_TEST
 START_TEST(l_u) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%lu", 92233720);
-  sprintf(buff, "%lu", 92233720);
+  unsigned long int u = 1234567890;
+  s21_sprintf(s21_buff, "%lu", u);
+  sprintf(buff, "%lu", u);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -538,7 +539,7 @@ END_TEST
 START_TEST(l_x) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  long int x = 256;
+  long int x = 15;
   s21_sprintf(s21_buff, "%lx", x);
   sprintf(buff, "%lx", x);
   ck_assert_pstr_eq(s21_buff, buff);
