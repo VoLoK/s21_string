@@ -36,7 +36,7 @@ int s21_sprintf(char* str, const char* format, ...) {
       }
       if (*format == 'h') {
         format++;
-        num = cast_to_h(list, format);
+        num = cast_to_h(list, format, &num_flag);
         num_flag = 1;
       }
       if (*format == 'l') {
@@ -121,7 +121,6 @@ int get_num(char** str) {
   *copy = 0;
   return atoi(temp);
 }
-
 
 void fill_width_padding(s21_size_t num_padding, char* str, int* i, int* size,
                         int* minus_flag) {
@@ -255,7 +254,6 @@ void x_specific(va_list list, char* str, int* i, int spec_x, long long int num,
     num = va_arg(list, int);
   }
   if (num == 0) {
-
     if (width > 0 && !*minus_flag) {
       int num_padding = (int)width - 1;
       fill_width_padding(num_padding, str, i, size, minus_flag);
@@ -387,13 +385,14 @@ char* s21_ftoa(char* buff, int size, float value, int digits) {
   return q;
 }
 
-long long cast_to_h(va_list list, const char* format) {
+long long cast_to_h(va_list list, const char* format, int* num_flag) {
   long long int num;
   if (*format == 'd' || *format == 'i') {
     num = (short int)va_arg(list, long long int);
   } else {
     num = (unsigned short)va_arg(list, long long int);
   }
+  *num_flag = 1;
   return num;
 }
 
@@ -424,17 +423,16 @@ void s21_utoa(long long int n, char s[]) {
 void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
                 char* str, int* size, long long num, s21_size_t width,
                 int* num_flag, int* minus_flag) {
-  *num_flag = 1;
-  if (num == -1) {
+  if (num == -1 && !*num_flag) {
     num = va_arg(list, unsigned int);
   }
   if ((num >= 0) && num <= INT_MAX) {
+    *num_flag = 1;
     d_specific(temp, list, p, len, i, str, num, size, width, num_flag,
                minus_flag);
   } else {
-    unsigned int usum = UINT_MAX - atoi(str);
     char str2[1000];
-    s21_utoa(usum, str2);
+    s21_utoa(num, str2);
     s21_size_t len_str2 = s21_strlen(str2);
     if (width > len_str2 && !*minus_flag) {
       s21_size_t num_padding = width - len_str2;

@@ -395,35 +395,35 @@ START_TEST(u_int_max) {
 }
 END_TEST
 
-// START_TEST(u_negative_number) {
-//   char s21_buff[100] = "";
-//   char buff[100] = "";
-//   int number = -100;
-//   s21_sprintf(s21_buff, "%u", number);
-//   sprintf(buff, "%u", number);
-//   ck_assert_pstr_eq(s21_buff, buff);
-// }
-// END_TEST
+START_TEST(u_negative_number) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  int number = -100;
+  s21_sprintf(s21_buff, "%u", number);
+  sprintf(buff, "%u", number);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
 
-// START_TEST(u_int_max_plus_number) {
-//   char s21_buff[100] = "";
-//   char buff[100] = "";
-//   unsigned int number = (unsigned int)INT_MAX + 100;
-//   s21_sprintf(s21_buff, "%u", number);
-//   sprintf(buff, "%u", number);
-//   ck_assert_pstr_eq(s21_buff, buff);
-// }
-// END_TEST
+START_TEST(u_int_max_plus_number) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  unsigned int number = (unsigned int)INT_MAX + 100;
+  s21_sprintf(s21_buff, "%u", number);
+  sprintf(buff, "%u", number);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
 
-// START_TEST(u_with_zero) {
-//   char s21_buff[100] = "";
-//   char buff[100] = "";
-//   int number = 0;
-//   s21_sprintf(s21_buff, "%u", number);
-//   sprintf(buff, "%u", number);
-//   ck_assert_pstr_eq(s21_buff, buff);
-// }
-// END_TEST
+START_TEST(u_with_zero) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  int number = 0;
+  s21_sprintf(s21_buff, "%u", number);
+  sprintf(buff, "%u", number);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
 
 START_TEST(d_width) {
   char s21_buff[100] = "";
@@ -546,6 +546,49 @@ START_TEST(l_x) {
 }
 END_TEST
 
+START_TEST(short_int_uns_oct_hex) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  short int y = 16;
+  unsigned short int x = 15;
+  s21_sprintf(s21_buff, "%hd %hu %ho %hx", y, x, x, x);
+  sprintf(buff, "%hd %hu %ho %hx", y, x, x, x);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(left_justify_plus_short) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  short int y = 16;
+  unsigned short int x = 15;
+  s21_sprintf(s21_buff, "%-10hd %-5hu %-7ho %-2hx", y, x, x, x);
+  sprintf(buff, "%-10hd %-5hu %-7ho %-2hx", y, x, x, x);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(left_justify) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  int x = 15;
+  s21_sprintf(s21_buff, "%-10d %-5d %-7d %-2d", x, x, x, x);
+  sprintf(buff, "%-10d %-5d %-7d %-2d", x, x, x, x);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
+START_TEST(short_border_numbers) {
+  char s21_buff[100] = "";
+  char buff[100] = "";
+  unsigned short x = USHRT_MAX;
+  short int y = SHRT_MAX;
+  s21_sprintf(s21_buff, "%hd %hu %hx %ho", y, x, x, x);
+  sprintf(buff, "%hd %hu %hx %ho", y, x, x, x);
+  ck_assert_pstr_eq(s21_buff, buff);
+}
+END_TEST
+
 Suite* suite_sprintf() {
   Suite* suite = suite_create("sprintf_suite");
   TCase* tcase_core = tcase_create("sprintf_tc");
@@ -601,6 +644,13 @@ Suite* suite_sprintf() {
   tcase_add_test(tcase_core, l_o);
   tcase_add_test(tcase_core, l_u);
   tcase_add_test(tcase_core, l_x);
+  tcase_add_test(tcase_core, u_negative_number);
+  tcase_add_test(tcase_core, u_int_max_plus_number);
+  tcase_add_test(tcase_core, u_with_zero);
+  tcase_add_test(tcase_core, short_int_uns_oct_hex);
+  tcase_add_test(tcase_core, left_justify);
+  tcase_add_test(tcase_core, left_justify_plus_short);
+  tcase_add_test(tcase_core, short_border_numbers);
 
   suite_add_tcase(suite, tcase_core);
   return suite;
