@@ -432,9 +432,8 @@ void u_specific(char* temp, va_list list, char* p, unsigned char len, int* i,
     d_specific(temp, list, p, len, i, str, num, size, width, num_flag,
                minus_flag);
   } else {
-    unsigned int usum = UINT_MAX - atoi(str);
     char str2[1000];
-    s21_utoa(usum, str2);
+    s21_utoa(num, str2);
     s21_size_t len_str2 = s21_strlen(str2);
     if (width > len_str2 && !*minus_flag) {
       s21_size_t num_padding = width - len_str2;
