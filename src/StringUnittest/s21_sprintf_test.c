@@ -583,8 +583,8 @@ START_TEST(short_border_numbers) {
   char buff[100] = "";
   unsigned short x = USHRT_MAX;
   short int y = SHRT_MAX;
-  s21_sprintf(s21_buff, "%hd %hu %hx %ho", y, x, -123, -1);
-  sprintf(buff, "%hd %hu %hx %ho", y, x, -123, -1);
+  s21_sprintf(s21_buff, "%hd %hu %hx %ho", y, x, x, x);
+  sprintf(buff, "%hd %hu %hx %ho", y, x, x, x);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST

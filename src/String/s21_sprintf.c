@@ -453,18 +453,3 @@ void percent_specific(char* str, int* i, int* size) {
   *i += 1;
   *size += 1;
 }
-
-//  #include <stdio.h>
-
-//  #include "s21_sprintf.h"
-//  #include "s21_string.h"
-//  int main() {
-//      char s21_buff[1000] = "";
-//      char buff[1000] = "";
-//      unsigned short y = 1;
-//      unsigned int z = 123;
-//      short int x = SHRT_MAX;
-//      s21_sprintf(s21_buff, "%d %hd %u %hu", INT_MAX, x, z, y);
-//      sprintf(buff, "%d %hd %u %hu", INT_MAX, x, z, y);
-// printf("s21 = [%s]\noriginal = [%s]\n", s21_buff, buff);
-// }
