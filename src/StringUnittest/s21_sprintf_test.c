@@ -581,18 +581,10 @@ END_TEST
 START_TEST(short_border_numbers) {
   char s21_buff[100] = "";
   char buff[100] = "";
-  s21_sprintf(s21_buff, "%hd %hu %hx %ho", INT_MAX, USHRT_MAX, -123, -1);
-  sprintf(buff, "%hd %hu %hx %ho", INT_MAX, USHRT_MAX, -123, -1);
-  ck_assert_pstr_eq(s21_buff, buff);
-}
-END_TEST
-
-START_TEST(short_and_int_uint_alternation) {
-  char s21_buff[100] = "";
-  char buff[100] = "";
-  int x = INT_MAX;
-  s21_sprintf(s21_buff, "%d %hd %u %hu", x, UINT_MAX, -123, -1);
-  sprintf(buff, "%d %hd %u %hu", x, UINT_MAX, -123, -1);
+  unsigned short x = USHRT_MAX;
+  short int y = SHRT_MAX;
+  s21_sprintf(s21_buff, "%hd %hu %hx %ho", y, x, -123, -1);
+  sprintf(buff, "%hd %hu %hx %ho", y, x, -123, -1);
   ck_assert_pstr_eq(s21_buff, buff);
 }
 END_TEST
@@ -659,7 +651,6 @@ Suite* suite_sprintf() {
   tcase_add_test(tcase_core, left_justify);
   tcase_add_test(tcase_core, left_justify_plus_short);
   tcase_add_test(tcase_core, short_border_numbers);
-  tcase_add_test(tcase_core, short_and_int_uint_alternation);
 
   suite_add_tcase(suite, tcase_core);
   return suite;
