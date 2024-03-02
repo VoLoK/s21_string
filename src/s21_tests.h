@@ -2,9 +2,9 @@
 #define SRC_S21_TESTS_H_
 
 #include <check.h>
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
 
 #include "s21_string.h"
 

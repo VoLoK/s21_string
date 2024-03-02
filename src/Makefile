@@ -4,17 +4,12 @@ TARGET?=s21_string.a
 TEST_TARGET?=test_s21_string.a
 TEST_EXE?=test_s21_string
 
-SRC_DIR?=./String
-INC_DIR?=./String/includes
-OBJ_DIR?=./String/obj
+SRCS=$(wildcard s21_*.c)
+OBJ=$(SRCS:.c=.o)
 
 TEST_SRC_DIR?=./StringUnittest
-TEST_INC_DIR?=./StringUnittest/includes
+TEST_INC_DIR?=./
 TEST_OBJ_DIR?=./StringUnittest/obj
-
-INC:=$(shell find $(INC_DIR) -name "s21_*.h")
-SRC:=$(shell find $(SRC_DIR) -name "s21_*.c")
-OBJ:=$(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.c=.o)))
 
 TEST_INC:=$(shell find $(TEST_INC_DIR) -name "s21_*.h")
 TEST_SRC:=$(shell find $(TEST_SRC_DIR) -name "s21_*.c")
@@ -40,13 +35,12 @@ $(TEST_TARGET): $(TEST_OBJ)
 	@$(RAN) $(TEST_TARGET)
 	@echo "\033[22;90m$(TEST_TARGET) has been changed and recompiled.\033[0m"
 
-$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC)
-	@$(MK) $(OBJ_DIR)
-	@$(CC) -c $(CFLAGS) -c $< -o $@ -I $(INC_DIR)
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(TEST_OBJ): $(TEST_OBJ_DIR)%.o: $(TEST_SRC_DIR)%.c $(TEST_INC)
 	@$(MK) $(TEST_OBJ_DIR)
-	@$(CC) -c $(CFLAGS) -o $@ -c $< -I $(TEST_INC_DIR) -I $(INC_DIR)
+	@$(CC) -c $(CFLAGS) -o $@ -c $< -I $(TEST_INC_DIR)
 
 test: $(TARGET) $(TEST_TARGET)
 	@$(CC) $(TEST_OBJ) $(TEST_TARGET) -o $(TEST_EXE) $(TEST_CFLAGS) -L. $(TARGET)
@@ -60,21 +54,24 @@ gcov_report: clean add-coverage test
 
 clang:
 	@cp ../materials/linters/.clang-format ./.clang-format
-	@clang-format -n --style=file $(SRC) $(INC) $(TEST_SRC) $(TEST_INC)
+	@clang-format -n --style=file *.c *.h StringUnittest/*.c
 	@$(RM) .clang-format
 
 clang-fix:
 	@cp ../materials/linters/.clang-format ./.clang-format
-	@clang-format -i --style=file $(SRC) $(INC) $(TEST_SRC) $(TEST_INC)
+	@clang-format -i --style=file *.c *.h StringUnittest/*.c
 	@$(RM) .clang-format
 
 clean:
-	@$(RM) -rd $(OBJ_DIR)
+	@$(RM) $(OBJ)
 	@$(RM) -rd $(TEST_OBJ_DIR)
 	@$(RM) $(TARGET)
 	@$(RM) $(TEST_TARGET)
 	@$(RM) $(TEST_EXE)
 	@$(RM) gcov*
+	@$(RM) *.gcda tests/*.gcda
+	@$(RM) *.gcno tests/*.gcno
+
 	@echo "\033[1;31mAll objects have been removed.\033[0m"
 
 re: clean all
